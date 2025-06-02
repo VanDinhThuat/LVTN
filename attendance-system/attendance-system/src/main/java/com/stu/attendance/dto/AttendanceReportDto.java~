@@ -1,0 +1,68 @@
+package com.stu.attendance.dto;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.time.LocalDate;
+import java.util.List;
+import java.util.Map;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class AttendanceReportDto {
+
+    // For student report
+    private String studentId;
+    private String studentName;
+    private String className;
+    private LocalDate startDate;
+    private LocalDate endDate;
+
+    // For subject report
+    private String subjectId;
+    private String subjectName;
+
+    // For class report
+    private String classId;
+    private String className;
+
+    // Common statistics
+    private int totalSessions;
+    private int totalPresent;
+    private int totalAbsent;
+    private int totalLate;
+    private double presentPercentage;
+
+    // Detailed statistics
+    private List<SessionAttendance> sessionAttendances;
+
+    // Subject-wise statistics
+    private Map<String, SubjectStatistics> subjectStatistics;
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class SessionAttendance {
+        private Integer sessionId;
+        private LocalDate date;
+        private String subjectName;
+        private String roomName;
+        private int startPeriod;
+        private int endPeriod;
+        private String status;
+    }
+
+    @Data
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class SubjectStatistics {
+        private String subjectName;
+        private int totalSessions;
+        private int present;
+        private int absent;
+        private int late;
+        private double presentPercentage;
+    }
+}

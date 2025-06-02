@@ -1,0 +1,103 @@
+.class-details {
+    padding: 20px;
+    background-color: #fafafa;
+    max-width: 800px;
+    margin: 0 auto;
+    border-radius: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.title {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.input-group {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin-bottom: 30px;
+}
+
+.input-field {
+    background-color: #fff;
+    border-radius: 8px;
+    padding: 10px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+.success-message {
+    color: green;
+    font-size: 16px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.error-message {
+    color: red;
+    font-size: 16px;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.button-container {
+    display: flex;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.update-btn, .del-btn {
+    flex: 1;
+    padding: 12px;
+    font-size: 16px;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+}
+
+.update-btn {
+    background-color: #3498db;
+    color: white;
+    border: none;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+}
+
+.del-btn {
+    background-color: #e74c3c;
+    color: white;
+    border: none;
+
+    &:hover {
+        transform: scale(1.05);
+    }
+}
+
+@media (max-width: 768px) {
+    .class-details {
+        padding: 15px;
+    }
+
+    .input-group {
+        gap: 10px;
+    }
+
+    .input-field {
+        padding: 8px;
+    }
+
+    .button-container {
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+.btn{
+    margin-top: 10px;
+    .left{
+        margin-top: 10px;
+    }
+}

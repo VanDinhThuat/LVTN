@@ -1,0 +1,26 @@
+.qr-container {
+    padding: 20px;
+    text-align: center;
+}
+
+.img-code {
+    width: 250px;
+    margin: 20px 0;
+}
+
+.manual-checkin {
+    margin-top: 30px;
+}
+
+.status-message {
+    margin-top: 10px;
+    font-weight: bold;
+}
+
+.status-message.success {
+    color: green;
+}
+
+.status-message.error {
+    color: red;
+}

@@ -1,0 +1,30 @@
+package com.stu.attendance.entity;
+
+import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+import org.springframework.security.core.userdetails.User;
+
+import java.time.LocalDateTime;
+
+@Entity
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class DiemDanhSinhVien {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private NguoiDung user;
+    @ManyToOne
+    @JoinColumn(name = "diemdanh_id")
+    private DiemDanh diemDanh;
+
+    private LocalDateTime time;
+    private String status = "Vang";
+}

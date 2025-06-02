@@ -1,0 +1,65 @@
+.diemdanh-container {
+    padding: 24px;
+    background-color: #f9f9fb;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+    max-width: 900px;
+    margin: auto;
+    margin-top: 32px;
+
+    h2 {
+        margin-bottom: 20px;
+        color: #333;
+        font-size: 24px;
+        font-weight: bold;
+    }
+
+    .diemdanh-table {
+        width: 100%;
+        border-collapse: collapse;
+
+        th, td {
+            padding: 12px 16px;
+            text-align: left;
+        }
+
+        thead {
+            background-color: #eef1f7;
+
+            th {
+                font-weight: 600;
+                color: #444;
+            }
+        }
+
+        tbody {
+            tr {
+                background-color: white;
+                border-bottom: 1px solid #e0e0e0;
+
+                &:hover {
+                    background-color: #f0f8ff;
+                }
+
+                td {
+                    color: #333;
+                }
+
+                .present {
+                    color: green;
+                    font-weight: bold;
+                }
+
+                .late {
+                    color: orange;
+                    font-weight: bold;
+                }
+
+                .absent {
+                    color: red;
+                    font-weight: bold;
+                }
+            }
+        }
+    }
+}

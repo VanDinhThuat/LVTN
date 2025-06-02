@@ -1,0 +1,44 @@
+package com.stu.attendance.repository;
+
+import com.stu.attendance.entity.BuoiHoc;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+
+import java.util.List;
+
+@Repository
+public interface SessionRepository extends JpaRepository<BuoiHoc, Integer> {
+    @Query("SELECT b FROM BuoiHoc b WHERE " +
+            "(:thu IS NULL OR b.thu = :thu) AND " +
+            "(:subjectId IS NULL OR b.monHoc.maMonHoc = :subjectId) AND " +
+            "(:roomId IS NULL OR b.phong.maPhong = :roomId)")
+    List<BuoiHoc> findAllSessions(
+            @Param("thu") String thu,
+            @Param("subjectId") String subjectId,
+            @Param("roomId") String roomId);
+
+    @Query("SELECT b FROM BuoiHoc b LEFT JOIN FETCH b.diemDanhs WHERE b.gvId = :gvId")
+    List<BuoiHoc> findAllSessionsByTeacher(@Param("gvId") String gvId);
+
+    List<BuoiHoc> findByGvId(String gvId);
+
+    BuoiHoc findByMaThamGia(String maThamGia);
+
+    @Query("SELECT ntg.buoiHoc FROM NguoiThamGia ntg WHERE ntg.nguoiDung.id = :nguoiDungId")
+    List<BuoiHoc> findAllBuoiHocByNguoiDungId(@Param("nguoiDungId") String nguoiDungId);
+
+    // Updated methods for scheduling conflict checks
+    List<BuoiHoc> findByPhongMaPhongAndThu(String maPhong, String thu);
+
+    List<BuoiHoc> findByPhongMaPhongAndThuAndMaBuoiHocNot(String maPhong, String thu, Integer maBuoiHoc);
+
+    List<BuoiHoc> findByGvIdAndThu(String gvId, String thu);
+
+    List<BuoiHoc> findByGvIdAndThuAndMaBuoiHocNot(String gvId, String thu, Integer maBuoiHoc);
+
+    List<BuoiHoc> findByMonHocMaMonHocAndThu(String maMonHoc, String thu);
+
+    List<BuoiHoc> findByMonHocMaMonHocAndThuAndMaBuoiHocNot(String maMonHoc, String thu, Integer maBuoiHoc);
+}

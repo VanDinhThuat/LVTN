@@ -1,0 +1,104 @@
+.teacherProfile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 20px;
+    background-color: #f7f7f7;
+}
+
+.teacherProfileContainer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 1200px;
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    border-radius: 8px;
+    margin-bottom: 20px;
+    padding: 20px;
+}
+
+.left {
+    flex: 1;
+    padding-right: 20px;
+}
+
+.teacher-image {
+    width: 100%;
+    max-width: 250px;
+    height: auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.right {
+    flex: 2;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.text-profile {
+    font-size: 16px;
+    color: #333;
+    margin-bottom: 10px;
+    font-weight: 500;
+}
+
+.delete-btn-container {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: 20px;
+}
+
+.delete-btn {
+    background-color: #e74c3c;
+    color: white;
+    font-weight: 600;
+    border-radius: 8px;
+    padding: 10px 20px;
+    transition: background-color 0.3s ease;
+
+    &:hover {
+        background-color: #c0392b;
+    }
+}
+
+.bottom {
+    margin-top: 20px;
+    display: flex;
+    .btn-r{
+        margin-left: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .teacherProfileContainer {
+        flex-direction: column;
+        padding: 15px;
+    }
+
+    .left {
+        padding-right: 0;
+        margin-bottom: 20px;
+    }
+
+    .teacher-image {
+        max-width: 180px;
+    }
+
+    .right {
+        text-align: center;
+    }
+
+    .delete-btn-container {
+        justify-content: center;
+    }
+}
+.btn-s{
+    display: flex;
+    .btn-l{
+        margin-right: 10px;
+    }
+}

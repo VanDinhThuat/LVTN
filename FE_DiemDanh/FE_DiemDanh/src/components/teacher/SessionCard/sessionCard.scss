@@ -1,0 +1,15 @@
+.sessionCardContainer{
+    background-color: white;
+    padding: 15px;
+    width: 85vw;
+    box-sizing: border-box;
+    margin-top: 10px;
+    border-radius: 20px;
+    cursor: pointer;
+    &:hover{
+        opacity: .7;
+    }
+    &:active{
+        opacity: .5;
+    }
+}

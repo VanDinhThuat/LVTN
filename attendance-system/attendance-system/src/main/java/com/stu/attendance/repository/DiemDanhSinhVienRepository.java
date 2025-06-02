@@ -1,0 +1,60 @@
+package com.stu.attendance.repository;
+
+import com.stu.attendance.dto.DiemDanhListResponse;
+import com.stu.attendance.dto.SinhVienStatusDTO;
+import com.stu.attendance.entity.DiemDanh;
+import com.stu.attendance.entity.DiemDanhSinhVien;
+import com.stu.attendance.entity.NguoiDung;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
+import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+
+@Repository
+public interface DiemDanhSinhVienRepository extends JpaRepository<DiemDanhSinhVien, Long> {
+@Query("SELECT new com.stu.attendance.dto.DiemDanhListResponse(" +
+        "nd.tenNguoiDung, dsv.time, dsv.status, dd.maDiemDanh) " +
+        "FROM DiemDanhSinhVien dsv " +
+        "JOIN dsv.user nd " +
+        "JOIN dsv.diemDanh dd " +
+        "WHERE nd.maNguoiDung = :maNguoiDung AND dd.buoiHoc.maBuoiHoc = :maBuoiHoc")
+List<DiemDanhListResponse> getDiemDanhListByNguoiDungAndBuoiHoc(
+        @Param("maNguoiDung") String maNguoiDung,
+        @Param("maBuoiHoc") Integer maBuoiHoc
+);
+    @Query("""
+    SELECT DISTINCT new com.stu.attendance.dto.SinhVienStatusDTO(
+        ntg.nguoiDung.maNguoiDung,
+        ntg.nguoiDung.tenNguoiDung,
+        dsv.status
+    )
+    FROM DiemDanh dd
+    JOIN dd.buoiHoc bh
+    JOIN NguoiThamGia ntg ON ntg.buoiHoc.maBuoiHoc = bh.maBuoiHoc
+    LEFT JOIN DiemDanhSinhVien dsv 
+        ON ntg.nguoiDung.maNguoiDung = dsv.user.maNguoiDung 
+        AND dsv.diemDanh.maDiemDanh = dd.maDiemDanh
+    WHERE dd.maDiemDanh = :diemDanhId
+""")
+    List<SinhVienStatusDTO> findAllStudentsAndStatusByDiemDanhId(@Param("diemDanhId") Integer diemDanhId);
+    List<DiemDanhSinhVien> findAll();
+
+@Query("SELECT dd FROM DiemDanhSinhVien dd WHERE dd.user.maNguoiDung = :studentId GROUP BY dd.diemDanh.maDiemDanh, dd.user.maNguoiDung")
+List<DiemDanhSinhVien> findByUserMaNguoiDung(@Param("studentId") String studentId);
+
+
+    List<DiemDanhSinhVien> findByDiemDanhBuoiHocMonHocMaMonHoc(String subjectId);
+
+    List<DiemDanhSinhVien> findByDiemDanhBuoiHocGvId(String teacherId);
+
+
+
+    List<DiemDanhSinhVien> findByDiemDanhBuoiHocPhongMaPhong(String roomId);
+    List<DiemDanhSinhVien> findByUserMaNguoiDungAndDiemDanhBuoiHocMonHocMaMonHoc(String studentId, String subjectId);
+
+
+}

@@ -1,0 +1,62 @@
+.diem-danh-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    padding: 20px;
+}
+
+.diem-danh-box {
+    background-color: #f9f9f9;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    padding: 15px;
+    max-width: 400px;
+    margin: auto;
+    transition: all 0.3s ease;
+
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .box-header {
+        font-size: 1.1rem;
+        font-weight: bold;
+        margin-bottom: 10px;
+        color: #333;
+    }
+
+    .box-body {
+        p {
+            margin: 5px 0;
+            font-size: 1rem;
+            color: #555;
+        }
+
+        strong {
+            color: #000;
+        }
+    }
+
+    .box-footer {
+        display: flex;
+        justify-content: center;
+        margin-top: 15px;
+
+        .diem-danh-btn {
+            padding: 10px 20px;
+            background-color: #4caf50;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 1rem;
+            transition: background-color 0.3s;
+
+            &:hover {
+                background-color: #45a049;
+            }
+        }
+    }
+}

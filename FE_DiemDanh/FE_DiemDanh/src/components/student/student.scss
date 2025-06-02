@@ -1,0 +1,68 @@
+.student-page {
+    background-color: #f5f5f5;
+    min-height: 100vh;
+    padding: 16px;
+}
+
+.group-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.join-class-container {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.join-input {
+    display: block;
+
+}
+
+.join-button {
+    background-color: #007bff;
+    color: white;
+    width: 100%;
+}
+
+.account-button {
+    background-color: #28a745;
+    color: white;
+}
+
+.session-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    margin-top: 16px;
+    height: 300px;
+    overflow: scroll;
+}
+
+.scan-button {
+    background-color: #ffc107;
+    color: black;
+    margin-top: 20px;
+}
+
+.qr-container {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.stop-scan-button {
+    margin-top: 10px;
+    background-color: #dc3545;
+    color: white;
+}
+
+.qr-result {
+    margin-top: 10px;
+    font-weight: bold;
+    color: green;
+    text-align: center;
+}

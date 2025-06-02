@@ -1,0 +1,17 @@
+.classCardContainer{
+    width: 80vw;
+    background-color: white;
+    padding: 20px;
+    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+    margin-top: 10px;
+    margin-left: 10px;
+    box-sizing: border-box;
+    cursor: pointer;
+    &:hover{
+        opacity: .7;
+    }
+    &:active{
+        opacity: .5;
+    }
+    border-radius: 20px;
+}

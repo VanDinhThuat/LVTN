@@ -1,0 +1,64 @@
+package com.stu.attendance.service;
+
+import com.stu.attendance.entity.*;
+import com.stu.attendance.repository.DiemDanhSinhVienRepository;
+import com.stu.attendance.repository.NguoiThamGiaRepository;
+import com.stu.attendance.repository.SessionRepository;
+import com.stu.attendance.repository.UserRepository;
+import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Service;
+
+import java.time.LocalDateTime;
+import java.util.List;
+import java.util.Optional;
+
+@Service
+@RequiredArgsConstructor
+@Slf4j
+public class NguoiThamGiaService {
+    private final NguoiThamGiaRepository nguoiThamGiaRepository;
+    private final UserRepository userRepository;
+    private final SessionRepository sessionRepository;
+    private final DiemDanhSinhVienRepository diemDanhSinhVienRepository;
+
+    @Transactional
+    public void addStudent(String userId, String maThamGia) {
+        // Find user and session
+        Optional<NguoiDung> nguoiDungOpt = userRepository.findByMaNguoiDung(userId);
+        BuoiHoc buoiHoc = sessionRepository.findByMaThamGia(maThamGia);
+
+        // Validate existence of user and session
+        if(!nguoiDungOpt.isPresent() || buoiHoc == null) {
+            return;
+        }
+
+        NguoiDung nguoiDung = nguoiDungOpt.get();
+
+        // Create and save NguoiThamGia record
+        NguoiThamGia nguoiThamGia = new NguoiThamGia();
+        nguoiThamGia.setNguoiDung(nguoiDung);
+        nguoiThamGia.setBuoiHoc(buoiHoc);
+        nguoiThamGiaRepository.save(nguoiThamGia);
+
+        // Find the latest DiemDanh record for this session
+        // Assuming you have a method to find the latest DiemDanh for a session
+        List<DiemDanh> diemDanhList = diemDanhSinhVienRepository.findByBuoiHocMaBuoiHocOrderByCreatedAtDesc(buoiHoc.getMaBuoiHoc());
+
+        // If there's at least one DiemDanh record, create a DiemDanhSinhVien with "Vắng" status
+        if (!diemDanhList.isEmpty()) {
+            DiemDanh latestDiemDanh = diemDanhList.get(0);
+
+            // Create DiemDanhSinhVien with default "Vắng" status
+            DiemDanhSinhVien diemDanhSinhVien = new DiemDanhSinhVien();
+            diemDanhSinhVien.setUser(nguoiDung);
+            diemDanhSinhVien.setDiemDanh(latestDiemDanh);
+            diemDanhSinhVien.setTime(LocalDateTime.now());
+            diemDanhSinhVien.setStatus("Vắng");
+
+            // Save the DiemDanhSinhVien record
+            diemDanhSinhVienRepository.save(diemDanhSinhVien);
+        }
+    }
+}
