@@ -90,9 +90,12 @@ const NopBaiPage = () => {
       const formData = new FormData();
       formData.append('file', selectedFile);
       formData.append('maTuan', maTuan);
-      formData.append('maSinhVien', user.id);
+      formData.append('maNguoiDung', user.userId);
       formData.append('ghiChu', ghiChu);
-
+      console.log('FormData contents:');
+    for (let [key, value] of formData.entries()) {
+      console.log(key, value);
+    }
       const response = await axios.post(
         'http://localhost:8080/api/nop-bai/submit',
         formData,

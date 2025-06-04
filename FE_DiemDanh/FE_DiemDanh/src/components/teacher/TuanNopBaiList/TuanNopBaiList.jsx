@@ -16,6 +16,7 @@ const TuanNopBaiList = () => {
 
   useEffect(() => {
     fetchTuanNopBai();
+    fetchBuoiHocInfo(); // Tách riệng việc lấy thông tin buổi học
     getUser();
   }, []);
 
@@ -24,17 +25,27 @@ const TuanNopBaiList = () => {
     setRole(user?.role);
   };
 
+  // Hàm riêng để lấy thông tin buổi học
+  const fetchBuoiHocInfo = async () => {
+    try {
+      const response = await axios.get(`http://localhost:8080/api/buoi-hoc/${maBuoiHoc}`);
+      setBuoiHoc(response.data);
+    } catch (err) {
+      console.error('Không thể lấy thông tin buổi học:', err);
+    }
+  };
+
   const fetchTuanNopBai = async () => {
     try {
       setLoading(true);
      
-     const response = await axios.get(`http://localhost:8080/api/tuan-nop-bai/buoi-hoc/${maBuoiHoc}`);
-     const {data} = response
+      const response = await axios.get(`http://localhost:8080/api/tuan-nop-bai/buoi-hoc/${maBuoiHoc}`);
+      const {data} = response;
 
-    setTuanNopBaiList(data);
+      setTuanNopBaiList(data);
       
-    
-      if (data.length > 0) {
+      // Chỉ set buoiHoc từ data nếu chưa có thông tin buổi học
+      if (data.length > 0 && !buoiHoc) {
         setBuoiHoc(data[0].buoiHoc);
       }
     } catch (err) {
@@ -57,23 +68,50 @@ const TuanNopBaiList = () => {
     navigate(`/tuan-nop-bai-detail?maTuan=${maTuan}`);
   };
 
-  // const handleNopBai = (maTuan) => {
-  //   navigate(`/nop-bai?maTuan=${maTuan}`);
-  // };
-const handleQuanLyNopBai = (maTuan) => {
+  const handleNopBai = (maTuan) => {
     navigate(`/nop-bai?maTuan=${maTuan}`);
   };
-  // const handleQuanLyNopBai = (maTuan) => {
-  //   navigate(`/quan-ly-nop-bai?maTuan=${maTuan}`);
-  // };
+
+const handleQuanLyNopBai = (maTuan) => {
+   navigate(`/quan-ly-nop-bai?maTuan=${maTuan}`);
+};
 
   const handleCloseTuan = async (maTuan) => {
     try {
-      // await axios.put(`http://localhost:8080/api/tuan-nop-bai/${maTuan}/close`);
+      await axios.put(`http://localhost:8080/api/tuan-nop-bai/${maTuan}/close`);
       fetchTuanNopBai(); // Refresh data
     } catch (error) {
       console.error('Lỗi khi đóng tuần:', error);
     }
+  };
+
+  // Render header với button tạo tuần luôn hiển thị cho admin/teacher
+  const renderHeader = () => {
+    return (
+      <Box className="header-info" style={{ marginBottom: '24px', padding: '16px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
+        <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+          <Box>
+            {buoiHoc ? (
+              <>
+                <Text className="group-title" style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '8px' }}>
+                  Lớp {buoiHoc.subjectName} - Ca {buoiHoc.startPeriod} ~ {buoiHoc.endPeriod}
+                </Text>
+                <Text style={{ color: '#666', fontSize: '14px' }}>Danh sách tuần nộp bài</Text>
+              </>
+            ) : (
+              <>
+               
+              </>
+            )}
+          </Box>
+          {(role === "admin" || role === "teacher") && (
+            <Button variant="primary" onClick={handleCreateTuan}>
+              Thêm tuần mới
+            </Button>
+          )}
+        </Box>
+      </Box>
+    );
   };
 
   if (loading) {
@@ -99,24 +137,8 @@ const handleQuanLyNopBai = (maTuan) => {
   return (
     <Page className="tuan-nop-bai-page">
       <Box className="tuan-nop-bai-container" style={{ padding: '16px' }}>
-        {/* Header */}
-        {buoiHoc && (
-          <Box className="header-info" style={{ marginBottom: '24px', padding: '16px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
-            <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-              <Box>
-                <Text className="group-title" style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '8px' }}>
-                  Lớp {buoiHoc.subjectName} - Ca {buoiHoc.startPeriod} ~ {buoiHoc.endPeriod}
-                </Text>
-                <Text style={{ color: '#666', fontSize: '14px' }}>Danh sách tuần nộp bài</Text>
-              </Box>
-              {(role === "admin" || role === "teacher") && (
-                <Button variant="primary" onClick={handleCreateTuan}>
-                  Thêm tuần mới
-                </Button>
-              )}
-            </Box>
-          </Box>
-        )}
+        {/* Header - luôn hiển thị */}
+        {renderHeader()}
 
         {/* Tuần nộp bài list */}
         <Box className="tuan-list-section">
@@ -210,7 +232,7 @@ const handleQuanLyNopBai = (maTuan) => {
                       Xem chi tiết
                     </Button>
                     
-                    {role === "teacher" || tuan.trangThai === 'active' && (
+                    {role === "student" && tuan.trangThai === 'active' && (
                       <Button variant="primary" onClick={() => handleNopBai(tuan.maTuan)}>
                         Nộp bài
                       </Button>
