@@ -67,6 +67,9 @@ const TuanNopBaiList = () => {
   const handleViewDetail = (maTuan) => {
     navigate(`/tuan-nop-bai-detail?maTuan=${maTuan}`);
   };
+  const Detailstudent = (maTuan) => {
+    navigate(`/tuan-nop-bai-detail-sinhvien?maTuan=${maTuan}`);
+  };
 
   const handleNopBai = (maTuan) => {
     navigate(`/nop-bai?maTuan=${maTuan}`);
@@ -228,9 +231,18 @@ const handleQuanLyNopBai = (maTuan) => {
                 {/* Actions */}
                 <Box className="actions-section">
                   <Box style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                    <Button variant="secondary" onClick={() => handleViewDetail(tuan.maTuan)}>
+                  {role === "student" && tuan.trangThai === 'active' && (
+                      <Button variant="secondary" onClick={() => Detailstudent(tuan.maTuan)}>
                       Xem chi tiết
                     </Button>
+                    )}
+                    {role === "teacher" && tuan.trangThai === 'active' && (
+                       <Button variant="secondary" onClick={() => handleViewDetail(tuan.maTuan)}>
+                       Xem chi tiết
+                     </Button>
+                   
+                    )}
+                  
                     
                     {role === "student" && tuan.trangThai === 'active' && (
                       <Button variant="primary" onClick={() => handleNopBai(tuan.maTuan)}>
