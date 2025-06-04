@@ -29,6 +29,7 @@ import TuanNopBaiList from "../components/teacher/TuanNopBaiList/TuanNopBaiList"
 import CreateTuanNopBai from "../components/teacher/CreateTuanNopBai/CreateTuanNopBai";
 import "./index.scss"
 import NopBaiPage from "../components/teacher/Nopbaipage/Nopbaipage";
+import QuanLyNopBaiPage from "../components/teacher/QuanLyNopBaiPage/QuanLyNopBaiPage";
 
 
 const Router = () => {
@@ -66,6 +67,7 @@ const Router = () => {
                 <Route path="/tuan-nop-bai" element={<TuanNopBaiList />} />
                 <Route path="/create-tuan-nop-bai" element={<CreateTuanNopBai />} />
                 <Route path="/nop-bai" element={<NopBaiPage />} />
+                <Route path="/quan-ly-nop-bai" element={<QuanLyNopBaiPage />} />
 
 
 
