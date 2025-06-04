@@ -184,7 +184,7 @@ const ProjectClassManager = () => {
   };
   const handleSelectClass = (classItem) => {
     // Navigate to TuanNopBaiList page with maBuoiHoc parameter
-    navigate(`/tuan-nop-bai?maBuoiHoc=${classItem.classId}`);
+    navigate(`/tuan-nop-bai?maBuoiHoc=${classItem.classId}`);//maBuoiHoc=8
   };
 
   const formatDate = (dateString) => {

@@ -28,70 +28,12 @@ const TuanNopBaiList = () => {
     try {
       setLoading(true);
      
-     const response = await axios.get(`http://localhost:8080/api/tuan-nop-bai/buoi-hoc/2`);
+     const response = await axios.get(`http://localhost:8080/api/tuan-nop-bai/buoi-hoc/${maBuoiHoc}`);
      const {data} = response
 
     setTuanNopBaiList(data);
       
-      // Mock data for demo
-      // const mockData = [
-      //   {
-      //     maTuan: 1,
-      //     tenTuan: "Tuần 1: Giới thiệu môn học",
-      //     moTa: "Bài tập về lý thuyết cơ bản và các khái niệm quan trọng của môn học",
-      //     ngayBatDau: "2024-12-01",
-      //     ngayKetThuc: "2024-12-07",
-      //     trangThai: "active",
-      //     buoiHoc: {
-      //       sessionId: 1,
-      //       subjectName: "Lập trình Web",
-      //       startPeriod: 1,
-      //       endPeriod: 3
-      //     },
-      //     nopBais: [
-      //       { maNopBai: 1, tenSinhVien: "Nguyễn Văn A" },
-      //       { maNopBai: 2, tenSinhVien: "Trần Thị B" }
-      //     ]
-      //   },
-      //   {
-      //     maTuan: 2,
-      //     tenTuan: "Tuần 2: HTML & CSS",
-      //     moTa: "Thực hành tạo trang web đơn giản sử dụng HTML và CSS",
-      //     ngayBatDau: "2024-12-08",
-      //     ngayKetThuc: "2024-12-14",
-      //     trangThai: "active",
-      //     buoiHoc: {
-      //       sessionId: 1,
-      //       subjectName: "Lập trình Web",
-      //       startPeriod: 1,
-      //       endPeriod: 3
-      //     },
-      //     nopBais: [
-      //       { maNopBai: 3, tenSinhVien: "Nguyễn Văn A" }
-      //     ]
-      //   },
-      //   {
-      //     maTuan: 3,
-      //     tenTuan: "Tuần 3: JavaScript cơ bản",
-      //     moTa: "Bài tập về biến, hàm và xử lý sự kiện trong JavaScript",
-      //     ngayBatDau: "2024-12-15",
-      //     ngayKetThuc: "2024-12-21",
-      //     trangThai: "closed",
-      //     buoiHoc: {
-      //       sessionId: 2,
-      //       subjectName: "Lập trình Web",
-      //       startPeriod: 1,
-      //       endPeriod: 3
-      //     },
-      //     nopBais: [
-      //       { maNopBai: 4, tenSinhVien: "Nguyễn Văn A" },
-      //       { maNopBai: 5, tenSinhVien: "Trần Thị B" },
-      //       { maNopBai: 6, tenSinhVien: "Lê Văn C" }
-      //     ]
-      //   }
-      // ];
-      
-      //setTuanNopBaiList(mockData);
+    
       if (data.length > 0) {
         setBuoiHoc(data[0].buoiHoc);
       }
@@ -115,13 +57,15 @@ const TuanNopBaiList = () => {
     navigate(`/tuan-nop-bai-detail?maTuan=${maTuan}`);
   };
 
-  const handleNopBai = (maTuan) => {
+  // const handleNopBai = (maTuan) => {
+  //   navigate(`/nop-bai?maTuan=${maTuan}`);
+  // };
+const handleQuanLyNopBai = (maTuan) => {
     navigate(`/nop-bai?maTuan=${maTuan}`);
   };
-
-  const handleQuanLyNopBai = (maTuan) => {
-    navigate(`/quan-ly-nop-bai?maTuan=${maTuan}`);
-  };
+  // const handleQuanLyNopBai = (maTuan) => {
+  //   navigate(`/quan-ly-nop-bai?maTuan=${maTuan}`);
+  // };
 
   const handleCloseTuan = async (maTuan) => {
     try {
@@ -266,7 +210,7 @@ const TuanNopBaiList = () => {
                       Xem chi tiết
                     </Button>
                     
-                    {role === "student" && tuan.trangThai === 'active' && (
+                    {role === "teacher" || tuan.trangThai === 'active' && (
                       <Button variant="primary" onClick={() => handleNopBai(tuan.maTuan)}>
                         Nộp bài
                       </Button>

@@ -28,6 +28,7 @@ import CreateProject from "../components/teacher/createproject/createproject";
 import TuanNopBaiList from "../components/teacher/TuanNopBaiList/TuanNopBaiList";
 import CreateTuanNopBai from "../components/teacher/CreateTuanNopBai/CreateTuanNopBai";
 import "./index.scss"
+import NopBaiPage from "../components/teacher/Nopbaipage/Nopbaipage";
 
 
 const Router = () => {
@@ -64,6 +65,8 @@ const Router = () => {
                 <Route path="/createproject" element={<CreateProject />}></Route>
                 <Route path="/tuan-nop-bai" element={<TuanNopBaiList />} />
                 <Route path="/create-tuan-nop-bai" element={<CreateTuanNopBai />} />
+                <Route path="/nop-bai" element={<NopBaiPage />} />
+
 
 
 
