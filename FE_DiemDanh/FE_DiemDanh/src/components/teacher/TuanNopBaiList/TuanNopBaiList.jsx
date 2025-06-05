@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, Page, Text, useLocation, useNavigate } from "zmp-ui";
 import axios from "axios";
-
+import { url } from '../../../AppConfig/AppConfig';
 const TuanNopBaiList = () => {
   const [tuanNopBaiList, setTuanNopBaiList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -28,7 +28,7 @@ const TuanNopBaiList = () => {
   // Hàm riêng để lấy thông tin buổi học
   const fetchBuoiHocInfo = async () => {
     try {
-      const response = await axios.get(`http://localhost:8080/api/buoi-hoc/${maBuoiHoc}`);
+      const response = await axios.get(`${url}/api/buoi-hoc/${maBuoiHoc}`);
       setBuoiHoc(response.data);
     } catch (err) {
       console.error('Không thể lấy thông tin buổi học:', err);
@@ -39,7 +39,7 @@ const TuanNopBaiList = () => {
     try {
       setLoading(true);
      
-      const response = await axios.get(`http://localhost:8080/api/tuan-nop-bai/buoi-hoc/${maBuoiHoc}`);
+      const response = await axios.get(`${url}/api/tuan-nop-bai/buoi-hoc/${maBuoiHoc}`);
       const {data} = response;
 
       setTuanNopBaiList(data);
@@ -81,7 +81,7 @@ const handleQuanLyNopBai = (maTuan) => {
 
   const handleCloseTuan = async (maTuan) => {
     try {
-      await axios.put(`http://localhost:8080/api/tuan-nop-bai/${maTuan}/close`);
+      await axios.put(`${url}/api/tuan-nop-bai/${maTuan}/close`);
       fetchTuanNopBai(); // Refresh data
     } catch (error) {
       console.error('Lỗi khi đóng tuần:', error);

@@ -1,6 +1,7 @@
 import { AnimationRoutes, ZMPRouter } from "zmp-ui";
 import { Route } from "react-router-dom";
-import HomeAdmin from "../components/Admin/Home/Home";
+//import HomeAdmin from "../components/Admin/Home/Home";
+import HomeAdmin from "../components/admin/home/Home";
 import TeacherProfile from "../components/admin/TeacherProfile/TeacherProfile";
 import StudentProfile from "../components/admin/StudentProflie/StudentProfile";
 import TeacherHome from "../components/teacher/TeacherHome/TeacherHome";
@@ -23,7 +24,8 @@ import ThongBao from "../components/ThongBao/ThongBao";
 import DiemDanh from "../components/teacher/diem-danh/DiemDanh";
 import DiemDanhDetails from "../components/teacher/DiemDanhDetails/DiemDanhDetails";
 import Account from "../components/Account/Account";
-import DiemDanhAdmin from "../components/Admin/diem-danh/DiemDanh";
+//import DiemDanhAdmin from "../components/Admin/diem-danh/DiemDanh";
+import DiemDanhAdmin from "../components/admin/diem-danh/DiemDanh";
 import CreateProject from "../components/teacher/createproject/createproject"; 
 import TuanNopBaiList from "../components/teacher/TuanNopBaiList/TuanNopBaiList";
 import CreateTuanNopBai from "../components/teacher/CreateTuanNopBai/CreateTuanNopBai";

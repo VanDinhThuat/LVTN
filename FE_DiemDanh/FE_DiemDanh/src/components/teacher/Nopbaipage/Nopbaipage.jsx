@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Box, Button, Page, Text, Input, useLocation, useNavigate } from "zmp-ui";
 import axios from "axios";
-
+import { url } from "../../../AppConfig/AppConfig";
 const NopBaiPage = () => {
   const [loading, setLoading] = useState(false);
   const [tuanInfo, setTuanInfo] = useState(null);
@@ -31,7 +31,7 @@ const NopBaiPage = () => {
   const fetchTuanInfo = async () => {
     try {
       setLoading(true);
-      const response = await axios.get(`http://localhost:8080/api/tuan-nop-bai/${maTuan}`);
+      const response = await axios.get(`${url}/api/tuan-nop-bai/${maTuan}`);
       setTuanInfo(response.data);
     } catch (err) {
       setError('Không thể tải thông tin tuần nộp bài');
@@ -97,7 +97,7 @@ const NopBaiPage = () => {
       console.log(key, value);
     }
       const response = await axios.post(
-        'http://localhost:8080/api/nop-bai/submit',
+        `${url}/api/nop-bai/submit`,
         formData,
         {
           headers: {

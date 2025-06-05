@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { BottomNavigation, Icon, Page } from "zmp-ui";
 import TeacherTable from "../TeacherTable/TeacherTable";
 //import ClassTable from "../ClassTable.jsx";
+import ClassTable from "../ClassTable/ClassTable";
 import SubjectTable from "../SubjectTable/SubjectTable";
 import StudentTable from "../StudentTable/StudentTable";
 import Account from "../../Account/Account";

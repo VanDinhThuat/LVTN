@@ -1,6 +1,6 @@
 import { Box, Button, Page, Text, useLocation, useNavigate } from "zmp-ui";
 import "./groupDetails.scss";
-import StudentCard from "../../Admin/StudentCard/StudentCard";
+import StudentCard from "../../admin/StudentCard/StudentCard";
 import { getLocation } from "zmp-sdk";
 import { useEffect, useState } from "react";
 import { url } from "../../../AppConfig/AppConfig";
