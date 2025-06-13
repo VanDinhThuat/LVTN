@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Button, Page, Text, useLocation, useNavigate } from "zmp-ui";
 import axios from "axios";
 import { url } from '../../../AppConfig/AppConfig';
+import './ChiTietBaiNopPage.scss';
 
 const ChiTietBaiNopPage = () => {
   const [loading, setLoading] = useState(false);
@@ -97,80 +98,51 @@ const ChiTietBaiNopPage = () => {
 
   return (
     <Page>
-      <Box style={{ padding: '16px', backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
+      <Box className="chi-tiet-bai-nop-container">
         {/* Header */}
-        <Box style={{ marginBottom: '24px' }}>
+        <Box className="chi-tiet-bai-nop-header">
           <Button 
             variant="secondary" 
             onClick={() => navigate(-1)}
-            style={{ marginBottom: '16px' }}
+            className="chi-tiet-bai-nop-header-back-btn"
+            size="small"
           >
             ← Quay lại
           </Button>
-          <Text style={{ fontSize: '24px', fontWeight: 'bold', color: '#1976d2' }}>
+          <Text className="chi-tiet-bai-nop-header-title">
             Chi tiết bài nộp
           </Text>
         </Box>
 
         {/* Error Message */}
         {error && (
-          <Box style={{ 
-            backgroundColor: '#ffebee', 
-            color: '#c53030', 
-            padding: '12px', 
-            borderRadius: '8px',
-            marginBottom: '16px'
-          }}>
+          <Box className="chi-tiet-bai-nop-error">
             <Text>{error}</Text>
           </Box>
         )}
 
         {loading ? (
-          <Box style={{ textAlign: 'center', padding: '40px' }}>
+          <Box className="chi-tiet-bai-nop-loading">
             <Text>Đang tải thông tin...</Text>
           </Box>
         ) : (
-          <Box style={{ 
-            backgroundColor: 'white', 
-            padding: '20px', 
-            borderRadius: '12px',
-            marginBottom: '20px'
-          }}>
+          <Box className="chi-tiet-bai-nop-content">
             {submission ? (
               <>
                 {/* File Information */}
-                <Box style={{ 
-                  padding: '20px',
-                  backgroundColor: '#f8f9fa',
-                  borderRadius: '8px',
-                  marginBottom: '20px'
-                }}>
-                  <Box style={{ display: 'flex', alignItems: 'center', marginBottom: '16px' }}>
-                    <Text style={{ 
-                      fontSize: '24px', 
-                      marginRight: '8px' 
-                    }}>
+                <Box className="chi-tiet-bai-nop-content-file-info">
+                  <Box className="chi-tiet-bai-nop-content-file-info-header">
+                    <Text className="chi-tiet-bai-nop-content-file-info-header-icon">
                       {getFileIcon(submission.tenFile)}
                     </Text>
-                    <Text style={{ 
-                      fontSize: '18px', 
-                      fontWeight: 'bold',
-                      color: '#1976d2'
-                    }}>
+                    <Text className="chi-tiet-bai-nop-content-file-info-header-name">
                       {submission.tenFile}
                     </Text>
                   </Box>
 
-                  <Box style={{ marginBottom: '16px' }}>
-                    <Text style={{ 
-                      color: '#666', 
-                      marginBottom: '8px',
-                      display: 'flex',
-                      alignItems: 'center'
-                    }}>
-                      <span style={{ marginRight: '8px' }}>📅</span>
-                      Thời gian nộp: {formatDate(submission.ngayNop)}
-                    </Text>
+                  <Box className="chi-tiet-bai-nop-content-file-info-date">
+                    <span className="chi-tiet-bai-nop-content-file-info-date-icon">📅</span>
+                    Thời gian nộp: {formatDate(submission.ngayNop)}
                   </Box>
 
                   {/* Download Button */}
@@ -178,33 +150,28 @@ const ChiTietBaiNopPage = () => {
                     variant="primary"
                     onClick={handleDownloadFile}
                     disabled={loading}
-                    style={{ width: '100%' }}
+                    className="chi-tiet-bai-nop-content-file-info-download-btn"
+                    size="small"
                   >
                     📥 Tải file
                   </Button>
                 </Box>
 
                 {/* Status Badge */}
-                <Box style={{
-                  display: 'inline-block',
-                  padding: '8px 16px',
-                  borderRadius: '20px',
-                  backgroundColor: '#e8f5e9',
-                  color: '#2e7d32',
-                  fontSize: '14px',
-                  marginBottom: '16px'
-                }}>
+                <Box className="chi-tiet-bai-nop-content-status">
                   ✅ Đã nộp bài thành công
                 </Box>
               </>
             ) : (
-              <Box style={{ textAlign: 'center', padding: '40px' }}>
-                <Text style={{ color: '#666', marginBottom: '16px', fontSize: '16px' }}>
+              <Box className="chi-tiet-bai-nop-content-empty">
+                <Text className="chi-tiet-bai-nop-content-empty-text">
                   Bạn chưa nộp bài cho tuần này
                 </Text>
                 <Button
                   variant="primary"
                   onClick={() => navigate(`/nop-bai?maTuan=${maTuan}`)}
+                  className="chi-tiet-bai-nop-content-empty-btn"
+                  size="small"
                 >
                   📤 Nộp bài ngay
                 </Button>

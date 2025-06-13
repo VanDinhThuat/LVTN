@@ -16,7 +16,7 @@ const SessionCard = ({s}) => {
             }
         }
         
-        // Kiểm tra theo tên môn học nếu không có subjectCode
+        
         if (s.subjectName) {
             const subjectName = s.subjectName.toUpperCase();
             if (subjectName.includes('ĐỒ ÁN') || 
@@ -29,7 +29,7 @@ const SessionCard = ({s}) => {
             }
         }
         
-        // Mặc định chuyển đến trang group details cho các môn khác
+       
         navigate(`/teacher/group?groupId=${s.sessionId}`);
     };
 
