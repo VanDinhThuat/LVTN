@@ -1,6 +1,5 @@
 package com.stu.attendance.entity;
 
-
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -21,8 +20,8 @@ public class TuanNopBai {
     private Integer maTuan;
 
     @ManyToOne
-    @JoinColumn(name = "ma_buoi_hoc", nullable = false)
-    private BuoiHoc buoiHoc;
+    @JoinColumn(name = "ma_nhom", nullable = false)
+    private NhomDoAn nhomDoAn;
 
     @Column(name = "ten_tuan", nullable = false)
     private String tenTuan;

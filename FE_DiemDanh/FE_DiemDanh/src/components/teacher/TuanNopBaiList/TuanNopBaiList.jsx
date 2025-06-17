@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Button, Page, Text, useLocation, useNavigate } from "zmp-ui";
 import axios from "axios";
 import { url } from '../../../AppConfig/AppConfig';
+
 const TuanNopBaiList = () => {
   const [tuanNopBaiList, setTuanNopBaiList] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,12 +13,17 @@ const TuanNopBaiList = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const params = new URLSearchParams(location.search);
-  const maBuoiHoc = params.get("maBuoiHoc") || 1;
+  const maBuoiHoc = params.get("maNhom") || 1;
 
   useEffect(() => {
-    fetchTuanNopBai();
-    fetchBuoiHocInfo(); // Tách riệng việc lấy thông tin buổi học
-    getUser();
+    const initializeData = async () => {
+      await Promise.all([
+        fetchTuanNopBai(),
+        fetchBuoiHocInfo(),
+        getUser()
+      ]);
+    };
+    initializeData();
   }, []);
 
   const getUser = () => {
@@ -25,10 +31,9 @@ const TuanNopBaiList = () => {
     setRole(user?.role);
   };
 
-  // Hàm riêng để lấy thông tin buổi học
   const fetchBuoiHocInfo = async () => {
     try {
-      const response = await axios.get(`${url}/api/buoi-hoc/${maBuoiHoc}`);
+      const response = await axios.get(`${url}/api/tuan-nop-bai/nhom-do-an/${maBuoiHoc}`);
       setBuoiHoc(response.data);
     } catch (err) {
       console.error('Không thể lấy thông tin buổi học:', err);
@@ -38,16 +43,8 @@ const TuanNopBaiList = () => {
   const fetchTuanNopBai = async () => {
     try {
       setLoading(true);
-     
-      const response = await axios.get(`${url}/api/tuan-nop-bai/buoi-hoc/${maBuoiHoc}`);
-      const {data} = response;
-
-      setTuanNopBaiList(data);
-      
-      // Chỉ set buoiHoc từ data nếu chưa có thông tin buổi học
-      if (data.length > 0 && !buoiHoc) {
-        setBuoiHoc(data[0].buoiHoc);
-      }
+      const response = await axios.get(`${url}/api/tuan-nop-bai/nhom-do-an/${maBuoiHoc}`);
+      setTuanNopBaiList(response.data);
     } catch (err) {
       setError('Không thể tải danh sách tuần nộp bài');
       console.error(err);
@@ -60,68 +57,216 @@ const TuanNopBaiList = () => {
     return new Date(dateString).toLocaleDateString('vi-VN');
   };
 
-  const handleCreateTuan = () => {
-    navigate(`/create-tuan-nop-bai?maBuoiHoc=${maBuoiHoc}`);
-  };
-
-  const handleViewDetail = (maTuan) => {
-    navigate(`/tuan-nop-bai-detail?maTuan=${maTuan}`);
-  };
-  const Detailstudent = (maTuan) => {
-    navigate(`/tuan-nop-bai-detail-sinhvien?maTuan=${maTuan}`);
-  };
-
-  const handleNopBai = (maTuan) => {
-    navigate(`/nop-bai?maTuan=${maTuan}`);
-  };
-
-const handleQuanLyNopBai = (maTuan) => {
-   navigate(`/quan-ly-nop-bai?maTuan=${maTuan}`);
-};
+  const handleCreateTuan = () => navigate(`/create-tuan-nop-bai?maBuoiHoc=${maBuoiHoc}`);
+  const handleViewDetail = (maTuan) => navigate(`/tuan-nop-bai-detail?maTuan=${maTuan}`);
+  const handleDetailStudent = (maTuan) => navigate(`/tuan-nop-bai-detail-sinhvien?maTuan=${maTuan}`);
+  const handleNopBai = (maTuan) => navigate(`/nop-bai?maTuan=${maTuan}`);
+  const handleQuanLyNopBai = (maTuan) => navigate(`/quan-ly-nop-bai?maTuan=${maTuan}`);
 
   const handleCloseTuan = async (maTuan) => {
     try {
       await axios.put(`${url}/api/tuan-nop-bai/${maTuan}/close`);
-      fetchTuanNopBai(); // Refresh data
+      fetchTuanNopBai();
     } catch (error) {
       console.error('Lỗi khi đóng tuần:', error);
     }
   };
 
-  // Render header với button tạo tuần luôn hiển thị cho admin/teacher
-  const renderHeader = () => {
-    return (
-      <Box className="header-info" style={{ marginBottom: '24px', padding: '16px', backgroundColor: '#f8f9fa', borderRadius: '8px' }}>
-        <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
-          <Box>
-            {buoiHoc ? (
-              <>
-                <Text className="group-title" style={{ fontSize: '20px', fontWeight: 'bold', marginBottom: '8px' }}>
-                  Lớp {buoiHoc.subjectName} - Ca {buoiHoc.startPeriod} ~ {buoiHoc.endPeriod}
-                </Text>
-                <Text style={{ color: '#666', fontSize: '14px' }}>Danh sách tuần nộp bài</Text>
-              </>
-            ) : (
-              <>
-               
-              </>
-            )}
+  const renderHeader = () => (
+    <Box className="header-info" style={{ 
+      marginBottom: '24px', 
+      padding: '20px', 
+      backgroundColor: '#ffffff',
+      borderRadius: '12px',
+      boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
+    }}>
+      <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <Box>
+          {buoiHoc && (
+            <>
+              <Text className="group-title" style={{ 
+                fontSize: '22px', 
+                fontWeight: '600', 
+                marginBottom: '8px',
+                color: '#1a1a1a'
+              }}>
+                Lớp {buoiHoc.subjectName} - Ca {buoiHoc.startPeriod} ~ {buoiHoc.endPeriod}
+              </Text>
+              <Text style={{ color: '#666', fontSize: '15px' }}>Danh sách tuần nộp bài</Text>
+            </>
+          )}
+        </Box>
+        {(role === "admin" || role === "teacher") && tuanNopBaiList.length > 0 && (
+          <Button 
+            variant="primary" 
+            onClick={handleCreateTuan}
+            style={{
+              padding: '10px 20px',
+              borderRadius: '8px',
+              fontWeight: '500'
+            }}
+          >
+            Thêm tuần mới
+          </Button>
+        )}
+      </Box>
+    </Box>
+  );
+
+  const renderTuanItem = (tuan) => (
+    <Box key={tuan.maTuan} style={{ 
+      marginBottom: '24px', 
+      padding: '20px', 
+      backgroundColor: 'white', 
+      borderRadius: '12px',
+      boxShadow: '0 2px 8px rgba(0,0,0,0.05)',
+      transition: 'transform 0.2s ease',
+      ':hover': {
+        transform: 'translateY(-2px)'
+      }
+    }}>
+      <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '16px' }}>
+        <Box style={{ flex: 1 }}>
+          <Box style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '10px' }}>
+            <Text style={{ fontSize: '20px', fontWeight: '600', color: '#1a1a1a' }}>{tuan.tenTuan}</Text>
+            <Text style={{ 
+              fontSize: '13px', 
+              padding: '6px 12px', 
+              borderRadius: '20px',
+              backgroundColor: tuan.trangThai === 'active' ? '#e8f5e8' : '#fee',
+              color: tuan.trangThai === 'active' ? '#2d5a2d' : '#c53030',
+              fontWeight: '500'
+            }}>
+              {tuan.trangThai === 'active' ? 'Đang mở' : 'Đã đóng'}
+            </Text>
           </Box>
-          {(role === "admin" || role === "teacher") && (
-            <Button variant="primary" onClick={handleCreateTuan}>
-              Thêm tuần mới
-            </Button>
+          {tuan.moTa && (
+            <Text style={{ color: '#666', fontSize: '15px', marginBottom: '16px', lineHeight: '1.5' }}>
+              {tuan.moTa}
+            </Text>
           )}
         </Box>
       </Box>
-    );
-  };
+
+      <Box style={{ 
+        display: 'grid', 
+        gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
+        gap: '16px', 
+        marginBottom: '20px',
+        padding: '16px',
+        backgroundColor: '#f8f9fa',
+        borderRadius: '8px'
+      }}>
+        <Text style={{ fontSize: '15px', color: '#444' }}>
+          📅 Bắt đầu: {formatDate(tuan.ngayBatDau)}
+        </Text>
+        <Text style={{ fontSize: '15px', color: '#444' }}>
+          ⏰ Kết thúc: {formatDate(tuan.ngayKetThuc)}
+        </Text>
+        <Text style={{ fontSize: '15px', color: '#444' }}>
+          👥 {tuan.nopBais?.length || 0} bài nộp
+        </Text>
+      </Box>
+
+      {tuan.nopBais && tuan.nopBais.length > 0 && (
+        <Box style={{ 
+          backgroundColor: '#f8f9fa', 
+          padding: '16px', 
+          borderRadius: '8px', 
+          marginBottom: '20px' 
+        }}>
+          <Text style={{ fontWeight: '600', marginBottom: '12px', fontSize: '15px', color: '#1a1a1a' }}>
+            Sinh viên đã nộp bài:
+          </Text>
+          <Box style={{ display: 'flex', flexWrap: 'wrap', gap: '8px' }}>
+            {tuan.nopBais.slice(0, 5).map((nopBai, index) => (
+              <Text key={index} style={{ 
+                backgroundColor: '#e8f5e8', 
+                color: '#2d5a2d', 
+                padding: '6px 12px', 
+                borderRadius: '20px', 
+                fontSize: '13px',
+                fontWeight: '500'
+              }}>
+                {nopBai.tenSinhVien}
+              </Text>
+            ))}
+            {tuan.nopBais.length > 5 && (
+              <Text style={{ 
+                backgroundColor: '#e0e0e0', 
+                color: '#666', 
+                padding: '6px 12px', 
+                borderRadius: '20px', 
+                fontSize: '13px',
+                fontWeight: '500'
+              }}>
+                +{tuan.nopBais.length - 5} khác
+              </Text>
+            )}
+          </Box>
+        </Box>
+      )}
+
+      <Box style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
+        {role === "student" && tuan.trangThai === 'active' && (
+          <>
+            <Button 
+              variant="secondary" 
+              onClick={() => handleDetailStudent(tuan.maTuan)}
+              style={{ padding: '10px 20px', borderRadius: '8px' }}
+            >
+              Xem chi tiết
+            </Button>
+            <Button 
+              variant="primary" 
+              onClick={() => handleNopBai(tuan.maTuan)}
+              style={{ padding: '10px 20px', borderRadius: '8px' }}
+            >
+              Nộp bài
+            </Button>
+          </>
+        )}
+        
+        {role === "teacher" && tuan.trangThai === 'active' && (
+          <Button 
+            variant="secondary" 
+            onClick={() => handleViewDetail(tuan.maTuan)}
+            style={{ padding: '10px 20px', borderRadius: '8px' }}
+          >
+            Xem chi tiết
+          </Button>
+        )}
+        
+        {(role === "admin" || role === "teacher") && (
+          <>
+            <Button 
+              variant="secondary" 
+              onClick={() => handleQuanLyNopBai(tuan.maTuan)}
+              style={{ padding: '10px 20px', borderRadius: '8px' }}
+            >
+              Quản lý nộp bài
+            </Button>
+            {tuan.trangThai === 'active' && (
+              <Button 
+                type="danger" 
+                variant="secondary" 
+                onClick={() => handleCloseTuan(tuan.maTuan)}
+                style={{ padding: '10px 20px', borderRadius: '8px' }}
+              >
+                Đóng tuần
+              </Button>
+            )}
+          </>
+        )}
+      </Box>
+    </Box>
+  );
 
   if (loading) {
     return (
       <Page>
         <Box style={{ textAlign: 'center', padding: '50px' }}>
-          <Text>Đang tải...</Text>
+          <Text style={{ fontSize: '16px', color: '#666' }}>Đang tải...</Text>
         </Box>
       </Page>
     );
@@ -131,7 +276,7 @@ const handleQuanLyNopBai = (maTuan) => {
     return (
       <Page>
         <Box style={{ textAlign: 'center', padding: '50px' }}>
-          <Text style={{ color: 'red' }}>{error}</Text>
+          <Text style={{ color: '#c53030', fontSize: '16px' }}>{error}</Text>
         </Box>
       </Page>
     );
@@ -139,153 +284,55 @@ const handleQuanLyNopBai = (maTuan) => {
 
   return (
     <Page className="tuan-nop-bai-page">
-      <Box className="tuan-nop-bai-container" style={{ padding: '16px' }}>
-        {/* Header - luôn hiển thị */}
+      <Box className="tuan-nop-bai-container" style={{ padding: '20px', maxWidth: '1200px', margin: '0 auto' }}>
         {renderHeader()}
-
-        {/* Tuần nộp bài list */}
+        
         <Box className="tuan-list-section">
           {tuanNopBaiList.length > 0 ? (
-            tuanNopBaiList.map((tuan) => (
-              <Box key={tuan.maTuan} style={{ 
-                marginBottom: '20px', 
-                padding: '16px', 
-                backgroundColor: 'white', 
-                borderRadius: '8px',
-                border: '1px solid #e0e0e0'
-              }}>
-                {/* Tuan Header */}
-                <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', marginBottom: '12px' }}>
-                  <Box style={{ flex: 1 }}>
-                    <Box style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '8px' }}>
-                      <Text style={{ fontSize: '18px', fontWeight: 'bold' }}>{tuan.tenTuan}</Text>
-                      <Text style={{ 
-                        fontSize: '12px', 
-                        padding: '4px 8px', 
-                        borderRadius: '12px',
-                        backgroundColor: tuan.trangThai === 'active' ? '#e8f5e8' : '#fee',
-                        color: tuan.trangThai === 'active' ? '#2d5a2d' : '#c53030'
-                      }}>
-                        {tuan.trangThai === 'active' ? 'Đang mở' : 'Đã đóng'}
-                      </Text>
-                    </Box>
-                    {tuan.moTa && (
-                      <Text style={{ color: '#666', fontSize: '14px', marginBottom: '12px' }}>
-                        {tuan.moTa}
-                      </Text>
-                    )}
-                  </Box>
+            <>
+              {tuanNopBaiList.map(renderTuanItem)}
+              {(role === "admin" || role === "teacher") && (
+                <Box style={{ 
+                  textAlign: 'center', 
+                  padding: '20px',
+                  marginTop: '20px'
+                }}>
+                  <Button 
+                    variant="secondary" 
+                    onClick={handleCreateTuan}
+                    style={{ 
+                      padding: '12px 24px', 
+                      borderRadius: '8px', 
+                      fontSize: '15px',
+                      backgroundColor: '#f8f9fa',
+                      border: '1px dashed #ccc'
+                    }}
+                  >
+                    + Thêm tuần mới
+                  </Button>
                 </Box>
-
-                {/* Thông tin thời gian */}
-                <Box style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', gap: '12px', marginBottom: '16px' }}>
-                  <Text style={{ fontSize: '14px', color: '#666' }}>
-                    📅 Bắt đầu: {formatDate(tuan.ngayBatDau)}
-                  </Text>
-                  <Text style={{ fontSize: '14px', color: '#666' }}>
-                    ⏰ Kết thúc: {formatDate(tuan.ngayKetThuc)}
-                  </Text>
-                  <Text style={{ fontSize: '14px', color: '#666' }}>
-                    👥 {tuan.nopBais?.length || 0} bài nộp
-                  </Text>
-                </Box>
-
-                {/* Danh sách sinh viên đã nộp */}
-                {tuan.nopBais && tuan.nopBais.length > 0 && (
-                  <Box style={{ 
-                    backgroundColor: '#f8f9fa', 
-                    padding: '12px', 
-                    borderRadius: '6px', 
-                    marginBottom: '16px' 
-                  }}>
-                    <Text style={{ fontWeight: 'bold', marginBottom: '8px', fontSize: '14px' }}>
-                      Sinh viên đã nộp bài:
-                    </Text>
-                    <Box style={{ display: 'flex', flexWrap: 'wrap', gap: '6px' }}>
-                      {tuan.nopBais.slice(0, 5).map((nopBai, index) => (
-                        <Text key={index} style={{ 
-                          backgroundColor: '#e8f5e8', 
-                          color: '#2d5a2d', 
-                          padding: '4px 8px', 
-                          borderRadius: '12px', 
-                          fontSize: '12px' 
-                        }}>
-                          {nopBai.tenSinhVien}
-                        </Text>
-                      ))}
-                      {tuan.nopBais.length > 5 && (
-                        <Text style={{ 
-                          backgroundColor: '#e0e0e0', 
-                          color: '#666', 
-                          padding: '4px 8px', 
-                          borderRadius: '12px', 
-                          fontSize: '12px' 
-                        }}>
-                          +{tuan.nopBais.length - 5} khác
-                        </Text>
-                      )}
-                    </Box>
-                  </Box>
-                )}
-
-                {/* Actions */}
-                <Box className="actions-section">
-                  <Box style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
-                  {role === "student" && tuan.trangThai === 'active' && (
-                      <Button variant="secondary" onClick={() => Detailstudent(tuan.maTuan)}>
-                      Xem chi tiết
-                    </Button>
-                    )}
-                    {role === "teacher" && tuan.trangThai === 'active' && (
-                       <Button variant="secondary" onClick={() => handleViewDetail(tuan.maTuan)}>
-                       Xem chi tiết
-                     </Button>
-                   
-                    )}
-                  
-                    
-                    {role === "student" && tuan.trangThai === 'active' && (
-                      <Button variant="primary" onClick={() => handleNopBai(tuan.maTuan)}>
-                        Nộp bài
-                      </Button>
-                    )}
-                    
-                    {(role === "admin" || role === "teacher") && (
-                      <>
-                        <Button variant="secondary" onClick={() => handleQuanLyNopBai(tuan.maTuan)}>
-                          Quản lý nộp bài
-                        </Button>
-                        {tuan.trangThai === 'active' && (
-                          <Button 
-                            type="danger" 
-                            variant="secondary" 
-                            onClick={() => handleCloseTuan(tuan.maTuan)}
-                          >
-                            Đóng tuần
-                          </Button>
-                        )}
-                      </>
-                    )}
-                  </Box>
-                </Box>
-              </Box>
-            ))
+              )}
+            </>
           ) : (
             <Box style={{ 
               textAlign: 'center', 
-              padding: '48px 16px',
+              padding: '60px 20px',
               backgroundColor: 'white',
-              borderRadius: '8px',
-              border: '1px solid #e0e0e0'
+              borderRadius: '12px',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.05)'
             }}>
-              <Text style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px' }}>
+              <Text style={{ fontSize: '18px', fontWeight: '600', marginBottom: '12px', color: '#1a1a1a' }}>
                 Chưa có tuần nộp bài nào
               </Text>
-              <Text style={{ color: '#666', marginBottom: '16px' }}>
+              <Text style={{ color: '#666', marginBottom: '24px', fontSize: '15px' }}>
                 Bắt đầu tạo tuần nộp bài đầu tiên cho lớp học này
               </Text>
               {(role === "admin" || role === "teacher") && (
-                <Button variant="primary" onClick={handleCreateTuan}>
+                <Button 
+                  variant="primary" 
+                  onClick={handleCreateTuan}
+                  style={{ padding: '12px 24px', borderRadius: '8px', fontSize: '15px' }}
+                >
                   Tạo tuần nộp bài
                 </Button>
               )}

@@ -5,6 +5,7 @@ import com.stu.attendance.entity.NguoiDung;
 import com.stu.attendance.entity.NopBai;
 import com.stu.attendance.entity.TuanNopBai;
 import com.stu.attendance.entity.NguoiThamGia;
+import com.stu.attendance.entity.ThamGiaLopDoAn;
 import com.stu.attendance.repository.NopBaiRepository;
 import com.stu.attendance.repository.TeacherRepository;
 import com.stu.attendance.repository.TuanNopBaiRepository;
@@ -110,9 +111,9 @@ public class NopBaiService {
         TuanNopBai tuanNopBai = tuanNopBaiRepository.findById(maTuan)
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy tuần nộp bài"));
 
-        // Lấy danh sách sinh viên tham gia buổi học
-        List<NguoiDung> allStudents = tuanNopBai.getBuoiHoc().getNguoiThamGias().stream()
-                .map(NguoiThamGia::getNguoiDung)
+        // Lấy danh sách sinh viên tham gia lớp đồ án
+        List<NguoiDung> allStudents = tuanNopBai.getNhomDoAn().getLopDoAn().getThamGiaLopDoAns().stream()
+                .map(ThamGiaLopDoAn::getNguoiDung)
                 .filter(nd -> nd.getTaiKhoan() != null && "student".equals(nd.getTaiKhoan().getRole()))
                 .collect(Collectors.toList());
 

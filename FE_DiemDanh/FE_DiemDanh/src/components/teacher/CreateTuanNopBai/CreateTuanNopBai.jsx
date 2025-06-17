@@ -24,7 +24,7 @@ const CreateTuanNopBai = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const params = new URLSearchParams(location.search);
-  const maBuoiHoc = params.get("maBuoiHoc");
+  const maBuoiHoc = params.get("maNhom") || params.get("maBuoiHoc");
 
   const showSnackbar = (message, type = 'success') => {
     openSnackbar({
@@ -54,10 +54,10 @@ const CreateTuanNopBai = () => {
     try {
       const tuanData = {
         tenTuan,
-        maBuoiHoc: parseInt(maBuoiHoc),
-        ngayBatDau,
-        ngayKetThuc,
-        moTa,
+        maNhom: parseInt(maBuoiHoc),
+        ngayBatDau:startDate,
+        ngayKetThuc:endDate,
+        moTa:moTa,
         trangThai: 'active'
       };
 

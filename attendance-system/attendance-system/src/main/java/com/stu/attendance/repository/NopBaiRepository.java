@@ -20,8 +20,8 @@ public interface NopBaiRepository extends JpaRepository<NopBai, Integer> {
     @Query("SELECT COUNT(n) FROM NopBai n WHERE n.tuanNopBai.maTuan = :maTuan")
     Long countSubmissionsByWeek(@Param("maTuan") Integer maTuan);
 
-    @Query("SELECT n FROM NopBai n WHERE n.tuanNopBai.buoiHoc.maBuoiHoc = :maBuoiHoc")
-    List<NopBai> findByBuoiHoc(@Param("maBuoiHoc") Integer maBuoiHoc);
+    @Query("SELECT n FROM NopBai n WHERE n.tuanNopBai.nhomDoAn.maNhom = :maNhomDoan")
+    List<NopBai> findByNhomDoan(@Param("maNhomDoan") Integer maNhomDoan);
 
     boolean existsByTuanNopBai_MaTuanAndNguoiDung_MaNguoiDung(Integer maTuan, String maNguoiDung);
 }

@@ -33,7 +33,8 @@ import "./index.scss"
 import NopBaiPage from "../components/teacher/Nopbaipage/Nopbaipage";
 import QuanLyNopBaiPage from "../components/teacher/QuanLyNopBaiPage/QuanLyNopBaiPage";
 import ChiTietBaiNopPage from "../components/student/ChiTietBaiNopPage/ChiTietBaiNopPage";
-
+import ProjectGroupManager from "../components/teacher/ProjectGroupManager/ProjectGroupManager";
+import ProjectClassManager from "../components/teacher/ProjectClassManager/ProjectClassManager";
 const Router = () => {
     return (
         <ZMPRouter>
@@ -63,7 +64,7 @@ const Router = () => {
                 <Route path="/xem-diem-danh" element={<DiemDanh />}></Route>
                 <Route path="/account" element={<Account />}></Route>
                 <Route path="/admin-diem-danh" element={<DiemDanhAdmin />}></Route>
-
+                <Route path="/quan-ly-nhom" element={<ProjectGroupManager />}></Route>
                 <Route path="/diemdanh-chitiet" element={<DiemDanhDetails />}></Route>
                 <Route path="/createproject" element={<CreateProject />}></Route>
                 <Route path="/tuan-nop-bai" element={<TuanNopBaiList />} />
@@ -71,6 +72,9 @@ const Router = () => {
                 <Route path="/nop-bai" element={<NopBaiPage />} />
                 <Route path="/quan-ly-nop-bai" element={<QuanLyNopBaiPage />} />
                 <Route path="/tuan-nop-bai-detail-sinhvien" element={<ChiTietBaiNopPage />} />
+                <Route path="/lop-do-an" element={<ProjectClassManager />} />
+                
+                {/* Admin Routes */}
 
 
 

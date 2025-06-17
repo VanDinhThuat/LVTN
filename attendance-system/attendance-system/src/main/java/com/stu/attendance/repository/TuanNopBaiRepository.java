@@ -10,10 +10,10 @@ import java.util.List;
 @Repository
 public interface TuanNopBaiRepository extends JpaRepository<TuanNopBai, Integer> {
 
-    List<TuanNopBai> findByBuoiHoc_MaBuoiHocOrderByNgayBatDauAsc(Integer maBuoiHoc);
+    List<TuanNopBai> findByNhomDoAn_MaNhomOrderByNgayBatDauAsc(Integer maNhom);
 
-    @Query("SELECT t FROM TuanNopBai t WHERE t.buoiHoc.maBuoiHoc = :maBuoiHoc AND t.trangThai = 'active'")
-    List<TuanNopBai> findActiveWeeksByBuoiHoc(@Param("maBuoiHoc") Integer maBuoiHoc);
+    @Query("SELECT t FROM TuanNopBai t WHERE t.nhomDoAn.maNhom = :maNhomDoan AND t.trangThai = 'active'")
+    List<TuanNopBai> findActiveWeeksByNhomDoan(@Param("maNhomDoan") Integer maNhomDoan);
 
     @Query("SELECT t FROM TuanNopBai t WHERE t.trangThai = 'active' AND CURRENT_DATE BETWEEN t.ngayBatDau AND t.ngayKetThuc")
     List<TuanNopBai> findCurrentActiveWeeks();

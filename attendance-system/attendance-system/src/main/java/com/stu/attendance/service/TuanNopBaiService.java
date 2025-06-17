@@ -1,10 +1,9 @@
 package com.stu.attendance.service;
 
 import com.stu.attendance.dto.TuanNopBaiDTO;
-import com.stu.attendance.entity.BuoiHoc;
+import com.stu.attendance.entity.NhomDoAn;
 import com.stu.attendance.entity.TuanNopBai;
-
-import com.stu.attendance.repository.SessionRepository;
+import com.stu.attendance.repository.NhomDoAnRepository;
 import com.stu.attendance.repository.TuanNopBaiRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,10 +18,10 @@ import java.util.stream.Collectors;
 public class TuanNopBaiService {
 
     private final TuanNopBaiRepository tuanNopBaiRepository;
-    private final SessionRepository  buoiHocRepository;
+    private final NhomDoAnRepository nhomDoAnRepository;
 
-    public List<TuanNopBaiDTO> getWeeksByBuoiHoc(Integer maBuoiHoc) {
-        List<TuanNopBai> weeks = tuanNopBaiRepository.findByBuoiHoc_MaBuoiHocOrderByNgayBatDauAsc(maBuoiHoc);
+    public List<TuanNopBaiDTO> getWeeksByNhomDoan(Integer maNhomDoan) {
+        List<TuanNopBai> weeks = tuanNopBaiRepository.findByNhomDoAn_MaNhomOrderByNgayBatDauAsc(maNhomDoan);
         return weeks.stream().map(this::convertToDTO).collect(Collectors.toList());
     }
 
@@ -33,11 +32,11 @@ public class TuanNopBaiService {
 
     @Transactional
     public TuanNopBaiDTO createWeek(TuanNopBaiDTO dto) {
-        BuoiHoc buoiHoc = buoiHocRepository.findById(dto.getMaBuoiHoc())
-                .orElseThrow(() -> new RuntimeException("Không tìm thấy buổi học"));
+        NhomDoAn nhomDoAn = nhomDoAnRepository.findById(dto.getMaNhomDoan())
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy nhóm đồ án"));
 
         TuanNopBai tuanNopBai = new TuanNopBai();
-        tuanNopBai.setBuoiHoc(buoiHoc);
+        tuanNopBai.setNhomDoAn(nhomDoAn);
         tuanNopBai.setTenTuan(dto.getTenTuan());
         tuanNopBai.setMoTa(dto.getMoTa());
         tuanNopBai.setNgayBatDau(dto.getNgayBatDau());
@@ -79,7 +78,7 @@ public class TuanNopBaiService {
     private TuanNopBaiDTO convertToDTO(TuanNopBai entity) {
         TuanNopBaiDTO dto = new TuanNopBaiDTO();
         dto.setMaTuan(entity.getMaTuan());
-        dto.setMaBuoiHoc(entity.getBuoiHoc().getMaBuoiHoc());
+        dto.setMaNhomDoan(entity.getNhomDoAn().getMaNhom());
         dto.setTenTuan(entity.getTenTuan());
         dto.setMoTa(entity.getMoTa());
         dto.setNgayBatDau(entity.getNgayBatDau());

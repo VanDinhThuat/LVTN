@@ -1,0 +1,686 @@
+import React, { useState, useEffect } from 'react';
+import {
+  Page,
+  Header,
+  Box,
+  Text,
+  Button,
+  Input,
+  Select,
+  Icon,
+  Tabs,
+  Modal,
+  List,
+  Switch,
+  Progress,
+  Spinner,
+  useSnackbar
+} from 'zmp-ui';
+
+const ProjectClassManager = () => {
+  // 1. QUẢN LÝ TRẠNG THÁI
+  const [classes, setClasses] = useState([]);
+  const [selectedClass, setSelectedClass] = useState('');
+  const [students, setStudents] = useState([]);
+  const [weeklySchedule, setWeeklySchedule] = useState([]);
+  const [submissions, setSubmissions] = useState([]);
+  const [activeTab, setActiveTab] = useState('classes');
+
+  // Form states
+  const [newClassName, setNewClassName] = useState('');
+  const [newClassDescription, setNewClassDescription] = useState('');
+  const [classStartDate, setClassStartDate] = useState('');
+  const [classDuration, setClassDuration] = useState(15);
+
+  const [weekNumber, setWeekNumber] = useState(1);
+  const [weekTitle, setWeekTitle] = useState('');
+  const [weekDescription, setWeekDescription] = useState('');
+  const [weekDeadline, setWeekDeadline] = useState('');
+
+  const [evaluationComment, setEvaluationComment] = useState('');
+  const [evaluationScore, setEvaluationScore] = useState('');
+
+  // UI states
+  const [createClassModalVisible, setCreateClassModalVisible] = useState(false);
+  const [createWeekModalVisible, setCreateWeekModalVisible] = useState(false);
+  const [evaluateModalVisible, setEvaluateModalVisible] = useState(false);
+  const [currentSubmissionId, setCurrentSubmissionId] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const { openSnackbar } = useSnackbar();
+
+  // 2. DỮ LIỆU MẪU
+  const sampleClasses = [
+    {
+      id: 'LDA001',
+      name: 'Đồ án Web Development 2024',
+      description: 'Lớp đồ án phát triển ứng dụng web sử dụng React và Node.js',
+      startDate: '2024-02-01',
+      duration: 15,
+      studentCount: 25,
+      createdDate: '2024-01-15'
+    },
+    {
+      id: 'LDA002',
+      name: 'Đồ án Mobile App 2024',
+      description: 'Lớp đồ án phát triển ứng dụng di động React Native',
+      startDate: '2024-02-15',
+      duration: 16,
+      studentCount: 20,
+      createdDate: '2024-01-20'
+    }
+  ];
+
+  const sampleStudents = [
+    { id: 'SV001', name: 'Nguyễn Văn An', email: 'an.nv@email.com', projectTitle: 'Website Thương mại điện tử' },
+    { id: 'SV002', name: 'Trần Thị Bình', email: 'binh.tt@email.com', projectTitle: 'Ứng dụng Quản lý Chi tiêu' },
+    { id: 'SV003', name: 'Lê Minh Cường', email: 'cuong.lm@email.com', projectTitle: 'Game Puzzle 2D' },
+    { id: 'SV004', name: 'Phạm Thu Dung', email: 'dung.pt@email.com', projectTitle: 'App Học Ngoại ngữ' }
+  ];
+
+  const scoreOptions = [
+    { value: 'A', label: 'A - Xuất sắc' },
+    { value: 'B+', label: 'B+ - Tốt' },
+    { value: 'B', label: 'B - Khá' },
+    { value: 'C+', label: 'C+ - Trung bình khá' },
+    { value: 'C', label: 'C - Trung bình' },
+    { value: 'D+', label: 'D+ - Yếu' },
+    { value: 'D', label: 'D - Kém' },
+    { value: 'F', label: 'F - Rớt' }
+  ];
+
+  // 3. useEffect - Khởi tạo dữ liệu
+  useEffect(() => {
+    setClasses(sampleClasses);
+    setStudents(sampleStudents);
+
+    const sampleSchedule = [
+      {
+        id: 1,
+        classId: 'LDA001',
+        week: 1,
+        title: 'Phân tích yêu cầu và Thiết kế',
+        description: 'Hoàn thành document phân tích yêu cầu, use case diagram, và thiết kế database',
+        deadline: '2024-02-08',
+        isActive: true
+      },
+      {
+        id: 2,
+        classId: 'LDA001',
+        week: 2,
+        title: 'Thiết kế giao diện người dùng',
+        description: 'Tạo wireframe, mockup và prototype giao diện chính',
+        deadline: '2024-02-15',
+        isActive: true
+      }
+    ];
+    setWeeklySchedule(sampleSchedule);
+
+    const sampleSubmissions = [
+      {
+        id: 1,
+        classId: 'LDA001',
+        studentId: 'SV001',
+        week: 1,
+        submissionDate: '2024-02-07',
+        files: [
+          { name: 'Phan_tich_yeu_cau.pdf', size: '2.3 MB', type: 'application/pdf' },
+          { name: 'Database_design.sql', size: '1.1 MB', type: 'text/sql' }
+        ],
+        note: 'Em đã hoàn thành phân tích yêu cầu và thiết kế database. Mong thầy xem xét.',
+        teacherComment: '',
+        score: '',
+        status: 'Chờ đánh giá'
+      },
+      {
+        id: 2,
+        classId: 'LDA001',
+        studentId: 'SV002',
+        week: 1,
+        submissionDate: '2024-02-06',
+        files: [
+          { name: 'Requirements_Analysis.docx', size: '1.8 MB', type: 'application/docx' }
+        ],
+        note: 'Em gửi tài liệu phân tích yêu cầu ạ.',
+        teacherComment: 'Tốt, cần bổ sung thêm use case',
+        score: 'B+',
+        status: 'Đã đánh giá'
+      }
+    ];
+    setSubmissions(sampleSubmissions);
+  }, []);
+
+  // 4. HELPER FUNCTIONS
+  const showSnackbar = (message, type = 'success') => {
+    openSnackbar({
+      text: message,
+      type: type,
+      duration: 3000
+    });
+  };
+
+  const handleCreateClass = async () => {
+    if (!newClassName.trim() || !newClassDescription.trim() || !classStartDate) {
+      showSnackbar('Vui lòng điền đầy đủ thông tin lớp học!', 'error');
+      return;
+    }
+
+    setLoading(true);
+
+    // Simulate API call
+    setTimeout(() => {
+      const newClass = {
+        id: `LDA${String(classes.length + 1).padStart(3, '0')}`,
+        name: newClassName,
+        description: newClassDescription,
+        startDate: classStartDate,
+        duration: classDuration,
+        studentCount: 0,
+        createdDate: new Date().toISOString().split('T')[0]
+      };
+
+      setClasses(prev => [...prev, newClass]);
+      showSnackbar(`Đã tạo lớp "${newClassName}" thành công!`);
+
+      // Reset form
+      setNewClassName('');
+      setNewClassDescription('');
+      setClassStartDate('');
+      setClassDuration(15);
+      setCreateClassModalVisible(false);
+      setLoading(false);
+    }, 1000);
+  };
+
+  const handleCreateWeek = async () => {
+    if (!selectedClass || !weekTitle.trim() || !weekDescription.trim() || !weekDeadline) {
+      showSnackbar('Vui lòng điền đầy đủ thông tin tuần theo dõi!', 'error');
+      return;
+    }
+
+    setLoading(true);
+
+    setTimeout(() => {
+      const newWeek = {
+        id: Date.now(),
+        classId: selectedClass,
+        week: weekNumber,
+        title: weekTitle,
+        description: weekDescription,
+        deadline: weekDeadline,
+        isActive: true
+      };
+
+      setWeeklySchedule(prev => [...prev, newWeek]);
+      showSnackbar(`Đã tạo tuần ${weekNumber} thành công!`);
+
+      // Reset form
+      setWeekNumber(prev => prev + 1);
+      setWeekTitle('');
+      setWeekDescription('');
+      setWeekDeadline('');
+      setCreateWeekModalVisible(false);
+      setLoading(false);
+    }, 1000);
+  };
+
+  const handleEvaluateSubmission = () => {
+    if (!evaluationComment.trim() || !evaluationScore) {
+      showSnackbar('Vui lòng nhập nhận xét và điểm đánh giá!', 'error');
+      return;
+    }
+
+    setSubmissions(prev =>
+      prev.map(sub =>
+        sub.id === currentSubmissionId
+          ? {
+            ...sub,
+            teacherComment: evaluationComment,
+            score: evaluationScore,
+            status: 'Đã đánh giá'
+          }
+          : sub
+      )
+    );
+
+    showSnackbar('Đã cập nhật đánh giá thành công!');
+    setEvaluationComment('');
+    setEvaluationScore('');
+    setEvaluateModalVisible(false);
+    setCurrentSubmissionId(null);
+  };
+
+  const openEvaluationModal = (submissionId) => {
+    setCurrentSubmissionId(submissionId);
+    setEvaluateModalVisible(true);
+  };
+
+  // 5. COMPUTED VALUES
+  const selectedClassInfo = classes.find(c => c.id === selectedClass);
+  const classWeeks = weeklySchedule.filter(w => w.classId === selectedClass);
+  const classSubmissions = submissions.filter(s => s.classId === selectedClass);
+  const pendingSubmissions = classSubmissions.filter(s => s.status === 'Chờ đánh giá');
+
+  // 6. RENDER COMPONENTS
+  const renderClassManagement = () => (
+    <Box p={4}>
+      <Box mb={4}>
+        <Button
+          variant="primary"
+          fullWidth
+          onClick={() => setCreateClassModalVisible(true)}
+        >
+          <Icon icon="zi-plus" /> Tạo Lớp Mới
+        </Button>
+      </Box>
+
+      <Text size="large" bold mb={3}>📚 Danh Sách Lớp Đồ Án</Text>
+
+      {classes.length === 0 ? (
+        <Box className="text-center py-8">
+          <Text className="text-gray-500">Chưa có lớp đồ án nào</Text>
+        </Box>
+      ) : (
+        <List>
+          {classes.map(classItem => (
+            <List.Item
+              key={classItem.id}
+              onClick={() => setSelectedClass(classItem.id)}
+              className={`cursor-pointer ${selectedClass === classItem.id ? 'bg-blue-50 border-blue-200' : ''}`}
+              title={
+                <Box>
+                  <Text size="large" bold className={selectedClass === classItem.id ? 'text-blue-600' : ''}>
+                    {classItem.name}
+                  </Text>
+                  <Text size="small" className="text-gray-500 mt-1">
+                    {classItem.description}
+                  </Text>
+                </Box>
+              }
+              suffix={
+                <Box className="text-right">
+                  <Text size="small" className={selectedClass === classItem.id ? 'text-blue-600 font-semibold' : 'text-gray-500'}>
+                    {selectedClass === classItem.id ? 'Đang chọn' : classItem.id}
+                  </Text>
+                  <Text size="small" className="text-gray-400">
+                    {classItem.studentCount} sinh viên
+                  </Text>
+                </Box>
+              }
+            />
+          ))}
+        </List>
+      )}
+    </Box>
+  );
+
+  const renderScheduleManagement = () => (
+    <Box p={4}>
+      {!selectedClass ? (
+        <Box className="text-center py-8">
+          <Icon icon="zi-calendar" size={48} className="text-gray-400" />
+          <Text size="large" bold className="mt-2">📅 Quản lý Lịch Theo dõi</Text>
+          <Text className="text-gray-500 mt-1">Vui lòng chọn một lớp đồ án để tạo lịch theo dõi</Text>
+        </Box>
+      ) : (
+        <>
+          {selectedClassInfo && (
+            <Box className="bg-blue-50 p-4 rounded-lg mb-4 border border-blue-200">
+              <Text size="large" bold className="text-blue-600 mb-1">
+                📚 {selectedClassInfo.name}
+              </Text>
+              <Text className="text-gray-600">{selectedClassInfo.description}</Text>
+            </Box>
+          )}
+
+          <Box mb={4}>
+            <Button
+              variant="secondary"
+              fullWidth
+              onClick={() => setCreateWeekModalVisible(true)}
+            >
+              <Icon icon="zi-plus" /> Tạo Tuần Theo Dõi
+            </Button>
+          </Box>
+
+          <Text size="large" bold mb={3}>📋 Lịch Theo Dõi Hiện Tại</Text>
+
+          {classWeeks.length === 0 ? (
+            <Box className="text-center py-8">
+              <Text className="text-gray-500">Chưa có tuần theo dõi nào được tạo</Text>
+            </Box>
+          ) : (
+            <List>
+              {classWeeks.sort((a, b) => a.week - b.week).map(week => (
+                <List.Item
+                  key={week.id}
+                  title={
+                    <Box>
+                      <Text size="large" bold className="text-blue-600">
+                        📅 Tuần {week.week}: {week.title}
+                      </Text>
+                      <Text className="text-gray-600 mt-1">{week.description}</Text>
+                      <Text size="small" className="text-gray-500 mt-2">
+                        ⏰ Deadline: {week.deadline} |
+                        Status: {new Date(week.deadline) > new Date() ? ' Đang diễn ra' : ' Đã hết hạn'}
+                      </Text>
+                    </Box>
+                  }
+                  suffix={
+                    <Box className="text-right">
+                      <Text size="small" className={week.isActive ? 'text-green-600' : 'text-gray-500'}>
+                        {week.isActive ? 'Đang mở' : 'Đã đóng'}
+                      </Text>
+                    </Box>
+                  }
+                />
+              ))}
+            </List>
+          )}
+        </>
+      )}
+    </Box>
+  );
+
+  const renderSubmissionManagement = () => (
+    <Box p={4}>
+      {!selectedClass ? (
+        <Box className="text-center py-8">
+          <Icon icon="zi-note" size={48} className="text-gray-400" />
+          <Text size="large" bold className="mt-2">📄 Quản lý Bài Nộp</Text>
+          <Text className="text-gray-500 mt-1">Vui lòng chọn một lớp đồ án để xem bài nộp</Text>
+        </Box>
+      ) : (
+        <>
+          {selectedClassInfo && (
+            <Box className="bg-green-50 p-4 rounded-lg mb-4 border border-green-200">
+              <Text size="large" bold className="text-green-600 mb-2">
+                📚 {selectedClassInfo.name}
+              </Text>
+              <Box className="flex justify-between">
+                <Text size="small">📄 Tổng: {classSubmissions.length}</Text>
+                <Text size="small">⏳ Chờ: {pendingSubmissions.length}</Text>
+                <Text size="small">✅ Đã đánh giá: {classSubmissions.length - pendingSubmissions.length}</Text>
+              </Box>
+            </Box>
+          )}
+
+          <Text size="large" bold mb={3}>📄 Danh Sách Bài Nộp</Text>
+
+          {classSubmissions.length === 0 ? (
+            <Box className="text-center py-8">
+              <Text className="text-gray-500">Chưa có bài nộp nào</Text>
+            </Box>
+          ) : (
+            <List>
+              {classSubmissions.map(submission => {
+                const student = students.find(s => s.id === submission.studentId);
+                return (
+                  <List.Item
+                    key={submission.id}
+                    title={
+                      <Box>
+                        <Text size="large" bold className="text-blue-600">
+                          👨‍🎓 {student ? student.name : 'Unknown Student'}
+                        </Text>
+                        <Text size="small" className="text-gray-500">
+                          📧 {student ? student.email : 'N/A'} | 📋 {student ? student.projectTitle : 'N/A'}
+                        </Text>
+                        <Text size="small" className="text-gray-500">
+                          📅 Tuần {submission.week} | 📤 {submission.submissionDate}
+                        </Text>
+
+                        <Box className="mt-2">
+                          <Text size="small" bold>📎 Files:</Text>
+                          {submission.files.map((file, index) => (
+                            <Text key={index} size="small" className="text-gray-600 ml-2">
+                              • {file.name} ({file.size})
+                            </Text>
+                          ))}
+                        </Box>
+
+                        {submission.note && (
+                          <Box className="mt-2 p-2 bg-gray-50 rounded border-l-4 border-gray-400">
+                            <Text size="small" className="italic">💬 {submission.note}</Text>
+                          </Box>
+                        )}
+
+                        {submission.status === 'Đã đánh giá' && (
+                          <Box className="mt-2 p-2 bg-green-50 rounded border-l-4 border-green-400">
+                            <Text size="small" bold>👨‍🏫 Đánh giá: {submission.score}</Text>
+                            <Text size="small">{submission.teacherComment}</Text>
+                          </Box>
+                        )}
+                      </Box>
+                    }
+                    suffix={
+                      <Box className="text-right">
+                        <Text size="small" className={submission.status === 'Đã đánh giá' ? 'text-green-600' : 'text-orange-600'}>
+                          {submission.status}
+                        </Text>
+                        {submission.status === 'Chờ đánh giá' && (
+                          <Button
+                            size="small"
+                            variant="primary"
+                            className="mt-2"
+                            onClick={() => openEvaluationModal(submission.id)}
+                          >
+                            Đánh giá
+                          </Button>
+                        )}
+                      </Box>
+                    }
+                  />
+                );
+              })}
+            </List>
+          )}
+        </>
+      )}
+    </Box>
+  );
+
+  return (
+    <Page>
+
+
+      <Tabs id="main-tabs" activeKey={activeTab} onChange={setActiveTab}>
+        <Tabs.Tab key="classes" label="📚 Lớp học">
+          {renderClassManagement()}
+        </Tabs.Tab>
+        <Tabs.Tab key="schedule" label="📅 Lịch trình">
+          {renderScheduleManagement()}
+        </Tabs.Tab>
+        <Tabs.Tab key="submissions" label="📄 Bài nộp">
+          {renderSubmissionManagement()}
+        </Tabs.Tab>
+      </Tabs>
+
+      {/* Modal tạo lớp mới */}
+      <Modal
+        visible={createClassModalVisible}
+        title="➕ Tạo Lớp Đồ Án Mới"
+        onClose={() => setCreateClassModalVisible(false)}
+      >
+        <Box p={4}>
+          <Box mb={3}>
+            <Text className="font-semibold mb-2">📝 Tên lớp:</Text>
+            <Input
+              value={newClassName}
+              onChange={(e) => setNewClassName(e.target.value)}
+              placeholder="VD: Đồ án Web Development 2024"
+            />
+          </Box>
+
+          <Box mb={3}>
+            <Text className="font-semibold mb-2">📅 Ngày bắt đầu:</Text>
+            <Input
+              type="date"
+              value={classStartDate}
+              onChange={(e) => setClassStartDate(e.target.value)}
+            />
+          </Box>
+
+          <Box mb={3}>
+            <Text className="font-semibold mb-2">📋 Mô tả:</Text>
+            <Input
+              value={newClassDescription}
+              onChange={(e) => setNewClassDescription(e.target.value)}
+              placeholder="Mô tả chi tiết về lớp đồ án..."
+            />
+          </Box>
+
+          <Box mb={4}>
+            <Text className="font-semibold mb-2">⏱️ Thời lượng (tuần):</Text>
+            <Input
+              type="number"
+              value={classDuration}
+              onChange={(e) => setClassDuration(parseInt(e.target.value))}
+            />
+          </Box>
+
+          <Box className="flex gap-2">
+            <Button
+              variant="secondary"
+              fullWidth
+              onClick={() => setCreateClassModalVisible(false)}
+            >
+              Hủy
+            </Button>
+            <Button
+              variant="primary"
+              fullWidth
+              onClick={handleCreateClass}
+              loading={loading}
+            >
+              {loading ? <Spinner /> : '✨ Tạo Lớp'}
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
+
+      {/* Modal tạo tuần theo dõi */}
+      <Modal
+        visible={createWeekModalVisible}
+        title="➕ Tạo Tuần Theo Dõi"
+        onClose={() => setCreateWeekModalVisible(false)}
+      >
+        <Box p={4}>
+          <Box
+            flex
+            justifyContent="space-between"
+            style={{ gap: 16 }}
+          >
+            <Box
+              style={{ flex: 1 }}
+            >
+              <Text className="font-semibold mb-2">📅 Tuần số:</Text>
+              <Input
+                type="number"
+                value={weekNumber}
+                onChange={(e) => setWeekNumber(parseInt(e.target.value))}
+              />
+            </Box>
+
+            <Box
+              style={{ flex: 1 }}
+            >
+              <Text className="font-semibold mb-2">⏰ Deadline:</Text>
+              <Input
+                type="date"
+                value={weekDeadline}
+                onChange={(e) => setWeekDeadline(e.target.value)}
+              />
+            </Box>
+          </Box>
+
+          <Box mb={3} mt={3}>
+            <Text className="font-semibold mb-2">📝 Tiêu đề:</Text>
+            <Input
+              value={weekTitle}
+              onChange={(e) => setWeekTitle(e.target.value)}
+              placeholder="VD: Phân tích yêu cầu và Thiết kế"
+            />
+          </Box>
+
+          <Box mb={4}>
+            <Text className="font-semibold mb-2">📋 Mô tả:</Text>
+            <Input
+              value={weekDescription}
+              onChange={(e) => setWeekDescription(e.target.value)}
+              placeholder="Mô tả công việc cần hoàn thành..."
+            />
+          </Box>
+
+          <Box className="flex gap-2">
+            <Button
+              variant="secondary"
+              fullWidth
+              onClick={() => setCreateWeekModalVisible(false)}
+            >
+              Hủy
+            </Button>
+            <Button
+              variant="primary"
+              fullWidth
+              onClick={handleCreateWeek}
+              loading={loading}
+            >
+              {loading ? <Spinner /> : '📅 Tạo Tuần'}
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
+
+      {/* Modal đánh giá */}
+      <Modal
+        visible={evaluateModalVisible}
+        title="⭐ Đánh Giá Bài Nộp"
+        onClose={() => setEvaluateModalVisible(false)}
+      >
+        <Box p={4}>
+          <Box mb={3}>
+            <Text className="font-semibold mb-2">💬 Nhận xét:</Text>
+            <Input
+              value={evaluationComment}
+              onChange={(e) => setEvaluationComment(e.target.value)}
+              placeholder="Nhập nhận xét chi tiết..."
+            />
+          </Box>
+
+          <Box mb={4}>
+            <Text className="font-semibold mb-2">📊 Điểm:</Text>
+            <Select
+              value={evaluationScore}
+              onChange={(value) => setEvaluationScore(value)}
+              placeholder="Chọn điểm"
+            >
+              {scoreOptions.map(score => (
+                <Select.Option key={score.value} value={score.value} title={score.label} />
+              ))}
+            </Select>
+          </Box>
+
+          <Box className="flex gap-2">
+            <Button
+              variant="secondary"
+              fullWidth
+              onClick={() => setEvaluateModalVisible(false)}
+            >
+              Hủy
+            </Button>
+            <Button
+              variant="primary"
+              fullWidth
+              onClick={handleEvaluateSubmission}
+            >
+              ✅ Lưu Đánh Giá
+            </Button>
+          </Box>
+        </Box>
+      </Modal>
+    </Page>
+  );
+};
+
+export default ProjectClassManager;

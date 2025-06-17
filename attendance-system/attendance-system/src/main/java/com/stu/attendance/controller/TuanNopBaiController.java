@@ -15,9 +15,9 @@ public class TuanNopBaiController {
 
     private final TuanNopBaiService tuanNopBaiService;
 
-    @GetMapping("/buoi-hoc/{maBuoiHoc}")
-    public ResponseEntity<List<TuanNopBaiDTO>> getWeeksByBuoiHoc(@PathVariable Integer maBuoiHoc) {
-        List<TuanNopBaiDTO> weeks = tuanNopBaiService.getWeeksByBuoiHoc(maBuoiHoc);
+    @GetMapping("/nhom-do-an/{maNhomDoan}")
+    public ResponseEntity<List<TuanNopBaiDTO>> getWeeksByNhomDoan(@PathVariable Integer maNhomDoan) {
+        List<TuanNopBaiDTO> weeks = tuanNopBaiService.getWeeksByNhomDoan(maNhomDoan);
         return ResponseEntity.ok(weeks);
     }
 

@@ -6,7 +6,7 @@ import java.time.LocalDate;
 @Data
 public class TuanNopBaiDTO {
     private Integer maTuan;
-    private Integer maBuoiHoc;
+    private Integer maNhomDoan;
     private String tenTuan;
     private String moTa;
     private LocalDate ngayBatDau;
