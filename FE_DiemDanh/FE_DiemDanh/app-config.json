@@ -3,7 +3,7 @@
     "title": "My App",
     "headerColor": "#1843EF",
     "textColor": "white",
-    "leftButton": "back",
+    "leftButton": "none",
     "statusBar": "normal",
     "actionBarHidden": false,
     "hideAndroidBottomNavigationBar": false,

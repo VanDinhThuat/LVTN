@@ -53,11 +53,11 @@ const CreateTuanNopBai = () => {
 
     try {
       const tuanData = {
-        tenTuan,
-        maNhom: parseInt(maBuoiHoc),
+        tenTuan: tenTuan,
+        maNhomDoan: parseInt(maBuoiHoc),
         ngayBatDau:startDate,
         ngayKetThuc:endDate,
-        moTa:moTa,
+        moTa: moTa,
         trangThai: 'active'
       };
 

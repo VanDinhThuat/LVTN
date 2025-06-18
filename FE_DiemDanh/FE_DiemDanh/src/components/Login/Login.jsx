@@ -1,4 +1,4 @@
-import { Button, Icon, Input, Text, useNavigate } from "zmp-ui"
+import { Button, Icon, Input, Text, useNavigate, Page } from "zmp-ui"
 import "./Login.scss"
 import { useState } from "react"
 import axios from "axios"
@@ -28,7 +28,7 @@ const Login = () => {
                 navigate("/teacher")
             }
             else{
-                navigate("/student")
+                navigate("/homestu")
             }
         } catch (error) {
             setError("Tài khoản hoặc mật khẩu không đúng")
@@ -36,7 +36,7 @@ const Login = () => {
     }
 
     return (
-        <div className="loginContainer">
+        <Page className="loginContainer" header={{ title: "My App", leftButton: false, actionBarHidden: true }}>
             <div>
 
             </div>
@@ -59,7 +59,7 @@ const Login = () => {
                 </div>
 
             </div>
-        </div>
+        </Page>
     )
 }
 

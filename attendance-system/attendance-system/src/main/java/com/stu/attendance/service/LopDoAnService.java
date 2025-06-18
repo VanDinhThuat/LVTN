@@ -1,9 +1,12 @@
 package com.stu.attendance.service;
 
 import com.stu.attendance.dto.LopDoAnDTO;
+import com.stu.attendance.dto.SessionDto;
+import com.stu.attendance.entity.BuoiHoc;
 import com.stu.attendance.entity.LopDoAn;
 import com.stu.attendance.repository.LopDoAnRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.UUID;
@@ -15,7 +18,7 @@ import java.time.LocalDateTime;
 @Service
 @RequiredArgsConstructor
 public class LopDoAnService {
-    
+    @Autowired
     private final LopDoAnRepository lopDoAnRepository;
 
     @Transactional
@@ -82,6 +85,23 @@ public class LopDoAnService {
         LopDoAn lopDoAn = lopDoAnRepository.findById(maLopDoAn)
             .orElseThrow(() -> new RuntimeException("Không tìm thấy lớp đồ án với mã " + maLopDoAn));
         return convertToDTO(lopDoAn);
+    }
+    public List<LopDoAnDTO> getSSByUser(String id){
+        List<LopDoAn> ds = lopDoAnRepository.findAllLopDoAnByNguoiDungId(id);
+        List<LopDoAnDTO > lopDoAnDTOS = new ArrayList<>();
+        for (LopDoAn s : ds) {
+            LopDoAnDTO dto = new LopDoAnDTO();
+            dto.setMaLopDoAn(s.getMaLopDoAn());
+            dto.setTenLopDoAn(s.getTenLopDoAn());
+            dto.setGhiChu(s.getGhiChu());
+            dto.setGvId(s.getGvId());
+            dto.setThoiGianBatDau(s.getThoiGianBatDau());
+            dto.setThoiGianKetThuc(s.getThoiGianKetThuc());
+            dto.setMaThamGia(s.getMaThamGia());
+            lopDoAnDTOS.add(dto);
+        }
+
+        return lopDoAnDTOS;
     }
 
 } 

@@ -57,7 +57,7 @@ const TuanNopBaiList = () => {
     return new Date(dateString).toLocaleDateString('vi-VN');
   };
 
-  const handleCreateTuan = () => navigate(`/create-tuan-nop-bai?maBuoiHoc=${maBuoiHoc}`);
+  const handleCreateTuan = () => navigate(`/create-tuan-nop-bai?maNhom=${maBuoiHoc}`);
   const handleViewDetail = (maTuan) => navigate(`/tuan-nop-bai-detail?maTuan=${maTuan}`);
   const handleDetailStudent = (maTuan) => navigate(`/tuan-nop-bai-detail-sinhvien?maTuan=${maTuan}`);
   const handleNopBai = (maTuan) => navigate(`/nop-bai?maTuan=${maTuan}`);

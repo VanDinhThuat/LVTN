@@ -2,6 +2,7 @@ package com.stu.attendance.controller;
 
 import com.stu.attendance.dto.LopDoAnDTO;
 import com.stu.attendance.dto.NguoiThamGiaDTO;
+import com.stu.attendance.dto.SessionDto;
 import com.stu.attendance.dto.ThamGiaLopDoAnDTO;
 import com.stu.attendance.entity.ThamGiaLopDoAn;
 import com.stu.attendance.service.LopDoAnService;
@@ -59,5 +60,9 @@ public class LopDoAnController {
         } catch (RuntimeException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+    @GetMapping("/student")
+    public ResponseEntity<List<LopDoAnDTO>> getSSByStudent(@RequestParam(required = false) String id){
+        return ResponseEntity.ok(lopDoAnService.getSSByUser(id));
     }
 }

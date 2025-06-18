@@ -25,12 +25,17 @@ const ProjectGroupManager = () => {
   const [classId, setClassId] = useState(null);
   const [className, setClassName] = useState('');
   const [classes,setClasses] = useState([]);
+  const [userRole, setUserRole] = useState('');
 
   const { openSnackbar } = useSnackbar();
   const location = useLocation();
   const navigate = useNavigate();
 
   useEffect(() => {
+    // Get user role from localStorage
+    const user = JSON.parse(localStorage.getItem('user'));
+    setUserRole(user?.role || '');
+
     // Get classId from URL query parameter
     const params = new URLSearchParams(location.search);
     const maLopDoAn = params.get('maBuoiHoc');
@@ -153,13 +158,15 @@ const ProjectGroupManager = () => {
             <Text size="large" bold className="text-blue-600 mb-4 block">
               👥 {className || 'Đang tải...'}
             </Text>
-            <Button
-              variant="primary"
-              fullWidth
-              onClick={() => setCreateGroupModalVisible(true)}
-            >
-              ➕ Tạo Nhóm Mới
-            </Button>
+            {userRole !== 'student' && (
+              <Button
+                variant="primary"
+                fullWidth
+                onClick={() => setCreateGroupModalVisible(true)}
+              >
+                ➕ Tạo Nhóm Mới
+              </Button>
+            )}
           </Box>
         </Box>
 

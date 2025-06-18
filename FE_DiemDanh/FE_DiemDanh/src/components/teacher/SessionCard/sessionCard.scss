@@ -1,15 +1,79 @@
-.sessionCardContainer{
-    background-color: white;
-    padding: 15px;
-    width: 85vw;
-    box-sizing: border-box;
-    margin-top: 10px;
-    border-radius: 20px;
+.sessionCardContainer {
+    background: #fff;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 12px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     cursor: pointer;
-    &:hover{
-        opacity: .7;
+    transition: transform 0.2s ease;
+
+    &:hover {
+        transform: translateY(-2px);
     }
-    &:active{
-        opacity: .5;
+}
+
+.sessionCardContent {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.sessionCardHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding-bottom: 8px;
+    border-bottom: 1px solid #eee;
+
+    .subjectName {
+        font-size: 16px;
+        font-weight: 600;
+        color: #333;
     }
+
+    .sessionTime {
+        font-size: 14px;
+        color: #666;
+        background: #f5f5f5;
+        padding: 4px 8px;
+        border-radius: 6px;
+    }
+}
+
+.sessionCardBody {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .joinCode, .subjectCode {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+
+        .label {
+            font-size: 14px;
+            color: #666;
+            min-width: 90px;
+        }
+
+        .value {
+            font-size: 14px;
+            color: #333;
+            font-weight: 500;
+        }
+    }
+}
+
+.truncate {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.truncate-multi-line {
+    display: -webkit-box;
+    -webkit-line-clamp: 2; /* Limit to 2 lines */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }

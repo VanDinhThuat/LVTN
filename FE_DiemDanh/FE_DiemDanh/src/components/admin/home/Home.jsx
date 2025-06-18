@@ -25,7 +25,7 @@ const HomeAdmin = () => {
 
     return (
 
-        <Page>
+        <Page header={{ title: "My App", leftButton: "none" }}>
 
             {activeTab === "teacher" && <TeacherTable />}
             {activeTab === "class" && <ClassTable />}

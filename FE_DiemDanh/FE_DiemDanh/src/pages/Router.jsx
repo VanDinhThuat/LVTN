@@ -35,6 +35,7 @@ import QuanLyNopBaiPage from "../components/teacher/QuanLyNopBaiPage/QuanLyNopBa
 import ChiTietBaiNopPage from "../components/student/ChiTietBaiNopPage/ChiTietBaiNopPage";
 import ProjectGroupManager from "../components/teacher/ProjectGroupManager/ProjectGroupManager";
 import ProjectClassManager from "../components/teacher/ProjectClassManager/ProjectClassManager";
+import Homestu from "../components/student/Homestu";
 const Router = () => {
     return (
         <ZMPRouter>
@@ -73,6 +74,7 @@ const Router = () => {
                 <Route path="/quan-ly-nop-bai" element={<QuanLyNopBaiPage />} />
                 <Route path="/tuan-nop-bai-detail-sinhvien" element={<ChiTietBaiNopPage />} />
                 <Route path="/lop-do-an" element={<ProjectClassManager />} />
+                <Route path="/homestu" element={<Homestu />} />
                 
                 {/* Admin Routes */}
 

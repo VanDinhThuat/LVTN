@@ -1,11 +1,9 @@
 import React, { useState } from "react";
 import { BottomNavigation, Icon, Page } from "zmp-ui";
-import StudentGroup from "../StudentGroup/StudentGroup";
-import UserDetails from "../../UserDetails/UserDetails";
-import Account from "../../Account/Account";
-import ProjectClassManager from "../ProjectClassManager/ProjectClassManager";
-import CreateProject from "../createproject/createproject";
-import TuanNopBaiList from "../TuanNopBaiList/TuanNopBaiList";
+
+
+import Account from "../Account/Account";
+import StudentHome from "./StudentHome";
 
 
 const TeacherHome = () => {
@@ -20,9 +18,9 @@ const TeacherHome = () => {
 
         <Page header={{ title: "My App", leftButton: "none" }}>
 
-           {activeTab === "group" && <StudentGroup />}
-           {activeTab === "account" && <Account />}
-           {activeTab === "classmanager" && <ProjectClassManager />}
+           {activeTab === "group" && <StudentHome />}
+            {activeTab === "account" && <Account />}
+         
 
 
             <BottomNavigation
@@ -44,12 +42,7 @@ const TeacherHome = () => {
                     icon={<Icon icon="zi-user" />}
                     activeIcon={<Icon icon="zi-user-solid" />}
                 />
-                <BottomNavigation.Item
-                    key="classmanager"
-                    label="Quản lí đồ án"
-                    icon={<Icon icon="zi-user" />}
-                    activeIcon={<Icon icon="zi-user-solid" />}
-                />
+              
             </BottomNavigation>
         </Page>
     )

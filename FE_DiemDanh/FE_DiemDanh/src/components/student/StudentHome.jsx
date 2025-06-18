@@ -1,4 +1,4 @@
-import { Box, Button, Input, Page, useNavigate } from "zmp-ui";
+import { Box, Button, Input, Page, useNavigate, List, Text } from "zmp-ui";
 import { useEffect, useState } from "react";
 import { BrowserMultiFormatReader } from '@zxing/library';
 import axios from "axios";
@@ -9,9 +9,12 @@ import ErrorBoundary from "../ErrorBoudary/ErrorBoudary";
 
 const StudentHome = () => {
     const navigate = useNavigate();
-    const [sesision, setSession] = useState([]);
+    const [sessions, setSessions] = useState([]);
+    const [projects, setProjects] = useState([]);
+    const [activeTab, setActiveTab] = useState('sessions'); // 'sessions' or 'projects'
     const [maThamGia, setMaThamGia] = useState("");
-    const [isSuccess, setIsSucess] = useState(false);
+    const [maDoAn, setMaDoAn] = useState("");
+    const [isSuccess, setIsSuccess] = useState(false);
     const [qrResult, setQrResult] = useState(null);
     const [isScanning, setIsScanning] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
@@ -53,111 +56,281 @@ const StudentHome = () => {
         codeReader.decodeFromVideoDevice(null, 'video', handleScan)
             .catch(handleError);
     };
+    
 
     useEffect(() => {
-        getAllSession();
+        getAllSessions();
+        getAllProjects();
     }, []);
 
-    const getAllSession = async () => {
+    const getAllSessions = async () => {
         const id = JSON.parse(localStorage.getItem("user")).userId;
         try {
             const response = await axios.get(`${url}/api/admin/sessions/student?id=${id}`);
             const { data } = response;
-            setSession(data);
+            setSessions(data);
         } catch (error) {
             console.log(error);
             alert("Không thể tải danh sách lớp học. Vui lòng thử lại sau.");
         }
     };
 
+    const getAllProjects = async () => {
+        const id = JSON.parse(localStorage.getItem("user")).userId;
+        try {
+            const response = await axios.get(`${url}/api/lop-do-an/student?id=${id}`);
+            const { data } = response;
+            setProjects(data);
+        } catch (error) {
+            console.log(error);
+            alert("Không thể tải danh sách đồ án. Vui lòng thử lại sau.");
+        }
+    };
+
     const handleThamGia = async () => {
-        setIsSucess(false);
+        setIsSuccess(false);
         try {
             await axios.post(`${url}/api/admin/student/add`, {
                 userId: JSON.parse(localStorage.getItem("user")).userId,
                 maThamGia: maThamGia
             });
-            setIsSucess(true);
-            getAllSession();
+            setIsSuccess(true);
+            getAllSessions();
+            setMaThamGia("");
         } catch (error) {
             console.log(error);
             alert("Không thể tham gia lớp học. Vui lòng kiểm tra lại mã tham gia.");
         }
     };
 
+    const handleThamGiaDoAn = async () => {
+        setIsSuccess(false);
+        try {
+            await axios.post(`${url}/api/lop-do-an/student/add`, {
+                userId: JSON.parse(localStorage.getItem("user")).userId,
+                maThamGia: maDoAn
+            });
+            setIsSuccess(true);
+            getAllProjects();
+            setMaDoAn("");
+        } catch (error) {
+            console.log(error);
+            alert("Không thể tham gia nhóm đồ án. Vui lòng kiểm tra lại mã nhóm.");
+        }
+    };
+
+    useEffect(() => {
+        let timer;
+        if (isSuccess) {
+            timer = setTimeout(() => {
+                setIsSuccess(false);
+            }, 1000);
+        }
+        return () => {
+            if (timer) {
+                clearTimeout(timer);
+            }
+        };
+    }, [isSuccess]);
+
+    const handleSelectClass = (project) => {
+    navigate(`/quan-ly-nhom?maBuoiHoc=${project.maLopDoAn}`);
+    };
+    const formatDate = (dateString) => {
+        const date = new Date(dateString);
+        return date.toLocaleDateString('vi-VN', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit',
+            hour: '2-digit',
+            minute: '2-digit'
+        });
+    };
+
+    const ProjectCard = ({ project }) => (
+        <List.Item
+            key={project.maLopDoAn}
+            onClick={() => handleSelectClass(project)}
+            className="cursor-pointer hover:bg-blue-50 transition-colors duration-200 project-card-compact"
+            title={
+                <Box className="project-card-content">
+                    <Box className="flex justify-between items-start mb-1">
+                        <Text size="small" bold className="text-blue-600 truncate">
+                            📚 {project.tenLopDoAn}
+                        </Text>
+                    </Box>
+                    
+                    {project.ghiChu && (
+                        <Box className="bg-gray-50 p-2 rounded-lg mb-2 border border-gray-200">
+                            <Text size="xSmall" className="text-gray-600 italic truncate-multi-line">
+                                📝 {project.ghiChu}
+                            </Text>
+                        </Box>
+                    )}
+                    
+                    <Box className="grid grid-cols-2 gap-2 text-xs">
+                        <Box>
+                            <Text size="xSmall" className="text-gray-500">
+                                🗓️ Bắt đầu: {formatDate(project.thoiGianBatDau)}
+                            </Text>
+                            <Text size="xSmall" className="text-gray-500">
+                                🗓️ Kết thúc: {formatDate(project.thoiGianKetThuc)}
+                            </Text>
+                        </Box>
+                        <Box>
+                            <Text size="xSmall" className="text-gray-500">
+                                📋 Mã tham gia: {project.maThamGia || 'Chưa có'}
+                            </Text>
+                        </Box>
+                    </Box>
+                </Box>
+            }
+            suffix={
+                <Box className="text-center">
+                    <Text size="xSmall" className="text-blue-500 font-semibold">
+                        Xem chi tiết →
+                    </Text>
+                </Box>
+            }
+        />
+    );
+
     return (
-        <Page className="student-page">
+        <Page className="student-page" header={{ title: "My App", leftButton: "none" }}>
+            
 
-            <Box className="group-container">
-                {/* Nhập mã tham gia */}
-                {
-                    !isScanning && (
-                        <Box className="join-class-container">
-                            <Input
-                                placeholder="Nhập mã tham gia"
-                                value={maThamGia}
-                                onChange={(e) => setMaThamGia(e.target.value)}
-                                className="join-input"
-                            />
-                            <Button className="join-button" onClick={handleThamGia}>
-                                Tham gia
-                            </Button>
-                        </Box>
-
-                    )
-                }
-
-
-
-                {/* Danh sách lớp học */}
-                {
-                    !isScanning &&
-                    (
-                        <Box className="session-list">
-                            {sesision.length > 0 ? (
-                                sesision.map((item, index) => (
-                                    <SessionCard s={item} key={index} />
-                                ))
-                            ) : (
-                                <p>Không có buổi học nào.</p>
-                            )}
-
-
-
-                        </Box>
-                    )
-                }
-
-                {
-                    !isScanning &&
-                    (
+            {!isScanning && (
+                <Box className="tab-container">
+                    <Box className="tab-buttons">
                         <Button
-                            className="scan-button"
-                            onClick={() => {
-                                setIsScanning(true);
-                                startScanning();
-                            }}
+                            className={`tab-button ${activeTab === 'sessions' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('sessions')}
                         >
-                            Quét mã điểm danh
+                            Buổi học ({sessions.length})
                         </Button>
-                    )
-                }
-                {
-                    !isScanning && (
                         <Button
-                            className="account-button"
-                            onClick={() => navigate("/account")}
+                            className={`tab-button ${activeTab === 'projects' ? 'active' : ''}`}
+                            onClick={() => setActiveTab('projects')}
                         >
-                            Tài khoản
+                            Đồ án ({projects.length})
                         </Button>
-                    )
-                }
+                    </Box>
 
+                    <Box className="tab-content">
+                        {activeTab === 'sessions' && (
+                            <Box className="sessions-tab">
+                                {/* Tham gia lớp học */}
+                                <Box className="join-section">
+                                        {/* Simplified join form */}
+                                        <Input
+                                            placeholder="Nhập mã tham gia lớp học"
+                                            value={maThamGia}
+                                            onChange={(e) => setMaThamGia(e.target.value)}
+                                            className="join-input"
+                                        />
+                                        <Button 
+                                            className="join-button" 
+                                            onClick={handleThamGia}
+                                            disabled={!maThamGia.trim()}
+                                        >
+                                            Tham gia
+                                        </Button>
+                                </Box>
 
+                                {/* Danh sách buổi học */}
+                                <Box className="content-section">
+                                    <h3>Danh sách buổi học</h3>
+                                    <Box className="session-list">
+                                        {sessions.length > 0 ? (
+                                            sessions.map((item, index) => (
+                                                <SessionCard 
+                                                    s={item} 
+                                                    key={index}
+                                                />
+                                            ))
+                                        ) : (
+                                            <Box className="empty-state">
+                                                <p>Chưa có buổi học nào.</p>
+                                                <p>Sử dụng mã tham gia để tham gia lớp học mới.</p>
+                                            </Box>
+                                        )}
+                                    </Box>
+                                </Box>
 
-                {/* Quét QR */}
-                {isScanning && (
-                    <Box className="qr-container">
+                                {/* Nút quét QR */}
+                                <Box className="scan-section">
+                                    <Button
+                                        className="scan-button"
+                                        onClick={() => {
+                                            setIsScanning(true);
+                                            startScanning();
+                                        }}
+                                    >
+                                        📷 Quét mã điểm danh
+                                    </Button>
+                                </Box>
+                            </Box>
+                        )}
+
+                        {activeTab === 'projects' && (
+                            <Box className="projects-tab">
+                                {/* Tham gia đồ án */}
+                                <Box className="join-section">
+                                        {/* Simplified join form */}
+                                        <Input
+                                            placeholder="Nhập mã nhóm đồ án"
+                                            value={maDoAn}
+                                            onChange={(e) => setMaDoAn(e.target.value)}
+                                            className="join-input"
+                                        />
+                                        <Button 
+                                            className="join-button" 
+                                            onClick={handleThamGiaDoAn}
+                                            disabled={!maDoAn.trim()}
+                                        >
+                                            Tham gia
+                                        </Button>
+                                </Box>
+
+                                {/* Danh sách đồ án */}
+                                <Box className="content-section">
+                                    <h3>Danh sách đồ án</h3>
+                                    <Box className="project-list">
+                                        {projects.length > 0 ? (
+                                            projects.map((project, index) => (
+                                                <ProjectCard 
+                                                    project={project} 
+                                                    key={index}
+                                                />
+                                            ))
+                                        ) : (
+                                            <Box className="empty-state">
+                                                <p>Chưa tham gia nhóm đồ án nào.</p>
+                                                <p>Sử dụng mã nhóm để tham gia đồ án mới.</p>
+                                            </Box>
+                                        )}
+                                    </Box>
+                                </Box>
+                            </Box>
+                        )}
+                    </Box>
+                </Box>
+            )}
+
+            {/* QR Scanner */}
+            {isScanning && (
+                <Box className="qr-scanner-container">
+                    <Box className="qr-header">
+                        <h3>Quét mã điểm danh</h3>
+                        <Button
+                            className="close-scanner-button"
+                            onClick={() => setIsScanning(false)}
+                            size="small"
+                        >
+                            ✕
+                        </Button>
+                    </Box>
+                    <Box className="qr-content">
                         <ErrorBoundary>
                             <video id="video" width="100%" height="auto" />
                         </ErrorBoundary>
@@ -168,15 +341,24 @@ const StudentHome = () => {
                             Tắt camera
                         </Button>
                     </Box>
-                )}
+                </Box>
+            )}
 
-                {/* Kết quả quét */}
-                {qrResult && (
+            {/* QR Result */}
+            {qrResult && (
+                <Box className="qr-result-container">
                     <p className="qr-result">
-                        Kết quả quét: Điểm danh thành công
+                        ✅ Điểm danh thành công!
                     </p>
-                )}
-            </Box>
+                </Box>
+            )}
+
+            {/* Success Message */}
+            {isSuccess && (
+                <Box className="success-message">
+                    <p>✅ Tham gia thành công!</p>
+                </Box>
+            )}
         </Page>
     );
 };
