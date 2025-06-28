@@ -185,17 +185,17 @@ const ProjectGroupManager = () => {
               <List.Item
                 key={group.maNhom}
                 onClick={() => handleSelectgroup(group)}
-                className="hover:bg-blue-50 transition-colors duration-200"    
+                className="hover:bg-blue-50 transition-colors duration-200 mb-3 bg-gradient-to-r from-blue-50 to-indigo-50 rounded-xl border border-blue-200 shadow-sm"    
                 title={
                   <Box>
                     <Box className="flex justify-between items-start mb-2">
-                      <Text size="large" bold className="text-blue-600">
+                      <Text size="large" bold className="text-blue-700">
                         👥 {group.tenNhom}
                       </Text>
                     </Box>
                     
                     {group.ghiChu && (
-                      <Box className="bg-gray-50 p-3 rounded-lg mb-3 border border-gray-200">
+                      <Box className="bg-white p-3 rounded-lg mb-3 border border-gray-200 shadow-sm">
                         <Text className="text-gray-600 italic">
                           📝 {group.ghiChu}
                         </Text>
@@ -207,6 +207,7 @@ const ProjectGroupManager = () => {
                   <Button
                     variant="danger"
                     size="small"
+                    className="rounded-full"
                     onClick={(e) => {
                       e.stopPropagation();
                       handleDeleteGroup(group.maNhom);

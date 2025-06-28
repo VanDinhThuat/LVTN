@@ -18,25 +18,25 @@ const NopBaiPage = () => {
 
   useEffect(() => {
     if (maTuan && maNguoiDung) {
-      fetchSubmissions();
+      //fetchSubmissions();
     }
   }, [maTuan, maNguoiDung]);
 
-  const fetchSubmissions = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get(`${url}/api/nop-bai/sinh-vien/${maNguoiDung}`);
-      setSubmissions(response.data);
-      // Find current submission for this week
-      const currentSub = response.data.find(sub => sub.maTuan === parseInt(maTuan));
-      setCurrentSubmission(currentSub);
-    } catch (err) {
-      setError('Không thể tải thông tin nộp bài: ' + err.message);
-      console.error('Error fetching submissions:', err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  // const fetchSubmissions = async () => {
+  //   try {
+  //     setLoading(true);
+  //     const response = await axios.get(`${url}/api/nop-bai/sinh-vien/${maNguoiDung}`);
+  //     setSubmissions(response.data);
+  //     // Find current submission for this week
+  //     const currentSub = response.data.find(sub => sub.maTuan === parseInt(maTuan));
+  //     setCurrentSubmission(currentSub);
+  //   } catch (err) {
+  //     setError('Không thể tải thông tin nộp bài: ' + err.message);
+  //     console.error('Error fetching submissions:', err);
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  // };
 
   const handleFileSelect = (event) => {
     const file = event.target.files[0];
@@ -66,7 +66,7 @@ const NopBaiPage = () => {
       });
 
       // Refresh submissions after successful upload
-      await fetchSubmissions();
+      //await fetchSubmissions();
       setSelectedFile(null);
       // Reset file input
       const fileInput = document.querySelector('input[type="file"]');
@@ -87,7 +87,7 @@ const NopBaiPage = () => {
     try {
       setLoading(true);
       await axios.delete(`${url}/api/nop-bai/${currentSubmission.maNopBai}?maNguoiDung=${maNguoiDung}`);
-      await fetchSubmissions();
+     // await fetchSubmissions();
     } catch (err) {
       setError('Không thể xóa bài nộp: ' + err.message);
       console.error('Error deleting submission:', err);

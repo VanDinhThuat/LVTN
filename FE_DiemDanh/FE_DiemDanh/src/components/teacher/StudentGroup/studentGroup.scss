@@ -1,13 +1,78 @@
 .groupContainer {
     height: 100vh;
-    .sessionCard {
-        height: 75vh;
-        overflow: scroll;
-        padding: 15px;
+    background: #f2f5f9;
+    padding: 16px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+
+    .btn-class {
+        margin: 12px 0;
+        background: linear-gradient(135deg, #007bff, #0056b3);
+        color: #fff;
+        font-size: 16px;
+        padding: 12px;
+        border-radius: 10px;
+        font-weight: 600;
+        border: none;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0, 123, 255, 0.3);
+        transition: all 0.3s ease;
+
+        &:hover {
+            background: linear-gradient(135deg, #0056b3, #003e80);
+        }
     }
-    
-}
-.btn-class{
-    margin-top: 10px;
-    margin-bottom: 10px;
+
+    .sessionCard {
+        flex: 1;
+        overflow-y: auto;
+        padding: 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+
+        .group-card {
+            background: #ffffff;
+            border-radius: 14px;
+            padding: 16px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.08);
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            transition: transform 0.2s ease;
+
+            &:hover {
+                transform: translateY(-2px);
+                box-shadow: 0 10px 16px rgba(0, 0, 0, 0.12);
+            }
+
+            .group-title {
+                font-size: 16px;
+                font-weight: 600;
+                color: #333;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+
+                .badge {
+                    background-color: #eef4ff;
+                    color: #0056b3;
+                    font-size: 12px;
+                    padding: 4px 8px;
+                    border-radius: 8px;
+                    font-weight: 500;
+                }
+            }
+
+            .group-code {
+                font-size: 13px;
+                color: #666;
+                background: #f9fafc;
+                padding: 8px 10px;
+                border-radius: 8px;
+                font-family: monospace;
+            }
+        }
+    }
 }

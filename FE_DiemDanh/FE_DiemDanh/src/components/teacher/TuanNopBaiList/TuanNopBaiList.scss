@@ -142,8 +142,23 @@
   padding: 12px 24px;
   border-radius: 8px;
   font-size: 15px;
-  background-color: #f8f9fa;
-  border: 1px dashed #ccc;
+  background-color: #3b82f6;
+  color: white;
+  border: 1px solid #2563eb;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tuan-nop-bai-btn-add:hover {
+  background-color: #2563eb;
+  border-color: #1d4ed8;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+}
+
+.tuan-nop-bai-btn-add:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 4px rgba(59, 130, 246, 0.2);
 }
 .tuan-nop-bai-loading {
   text-align: center;

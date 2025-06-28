@@ -18,7 +18,7 @@ const NopBaiPage = () => {
 
   useEffect(() => {
     if (maTuan) {
-      fetchTuanInfo();
+      //fetchTuanInfo();
       getUser();
     }
   }, [maTuan]);
@@ -28,18 +28,7 @@ const NopBaiPage = () => {
     setUser(userData);
   };
 
-  const fetchTuanInfo = async () => {
-    try {
-      setLoading(true);
-      const response = await axios.get(`${url}/api/tuan-nop-bai/${maTuan}`);
-      setTuanInfo(response.data);
-    } catch (err) {
-      setError('Không thể tải thông tin tuần nộp bài');
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+  
 
   const handleFileChange = (event) => {
     const file = event.target.files[0];

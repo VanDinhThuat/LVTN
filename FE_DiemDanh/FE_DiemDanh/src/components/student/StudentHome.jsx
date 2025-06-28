@@ -70,7 +70,7 @@ const StudentHome = () => {
     
 
     useEffect(() => {
-        etQrResult(null);
+        setQrResult(null);
         setIsProcessing(false);
         setIsScanning(false);
         getAllSessions();
