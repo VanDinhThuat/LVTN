@@ -18,6 +18,7 @@ const StudentHome = () => {
     const [qrResult, setQrResult] = useState(null);
     const [isScanning, setIsScanning] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
+    const [err,setErr] = useState("")
 
     const handleScan = (result) => {
         if (result && !isProcessing && !qrResult) {
@@ -31,15 +32,25 @@ const StudentHome = () => {
 
     const handleQROK = async (code) => {
         try {
-            await axios.post(`${url}/api/student/diem-danh`, {
+           const response = await axios.post(`${url}/api/student/diem-danh`, {
                 time: new Date(),
                 code,
                 studentId: JSON.parse(localStorage.getItem("user")).userId
             });
             setIsProcessing(false);
             setQrResult(null);
-            setIsScanning(false);
-            navigate("/thanh-cong");
+            
+           
+            if (response.data === "Điểm danh thành công"){
+                setIsScanning(false);
+                navigate("/thanh-cong")
+            }
+            else if(response.data === "Đã quá thời gian điểm danh (6 phút). Không thể điểm danh."){
+                setErr("Quá thời gian điểm danh")
+            }
+            else{
+                setErr("Bạn đã điểm danh rồi")
+            }
         } catch (error) {
             console.error(error);
             setIsProcessing(false);
@@ -59,6 +70,9 @@ const StudentHome = () => {
     
 
     useEffect(() => {
+        etQrResult(null);
+        setIsProcessing(false);
+        setIsScanning(false);
         getAllSessions();
         getAllProjects();
     }, []);
@@ -198,7 +212,12 @@ const StudentHome = () => {
     return (
         <Page className="student-page" header={{ title: "My App", leftButton: "none" }}>
             
-
+            {err && (
+                <div className="error-alert">
+                    <span className="error-icon">⚠️</span>
+                    <span className="error-text">{err}</span>
+                </div>
+            )}
             {!isScanning && (
                 <Box className="tab-container">
                     <Box className="tab-buttons">
@@ -258,17 +277,35 @@ const StudentHome = () => {
                                 </Box>
 
                                 {/* Nút quét QR */}
-                                <Box className="scan-section">
+                                 {
+                                    !isScanning &&
+                                    (
+                                        <Button
+                                            className="scan-button"
+                                            onClick={() => {
+                                                
+                                                setIsScanning(true);
+                                                startScanning();
+                                            }}
+                                        >
+                                            Quét mã điểm danh
+                                        </Button>
+                                    )
+                              }  
+                              {isScanning && (
+                                <Box className="qr-container">
+                                    <ErrorBoundary>
+                                        <video id="video" width="100%" height="auto" />
+                                    </ErrorBoundary>
                                     <Button
-                                        className="scan-button"
-                                        onClick={() => {
-                                            setIsScanning(true);
-                                            startScanning();
-                                        }}
+                                        className="stop-scan-button"
+                                        onClick={() => setIsScanning(false)}
                                     >
-                                        📷 Quét mã điểm danh
+                                        Tắt camera
                                     </Button>
                                 </Box>
+                                )}
+                             
                             </Box>
                         )}
 
@@ -317,7 +354,7 @@ const StudentHome = () => {
                 </Box>
             )}
 
-            {/* QR Scanner */}
+            
             {isScanning && (
                 <Box className="qr-scanner-container">
                     <Box className="qr-header">
@@ -344,14 +381,14 @@ const StudentHome = () => {
                 </Box>
             )}
 
-            {/* QR Result */}
+            {/* QR Result
             {qrResult && (
                 <Box className="qr-result-container">
                     <p className="qr-result">
                         ✅ Điểm danh thành công!
                     </p>
                 </Box>
-            )}
+            )} */}
 
             {/* Success Message */}
             {isSuccess && (

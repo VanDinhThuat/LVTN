@@ -54,8 +54,6 @@ const DiemDanhDetails = () => {
                                 </tr>
                             ))
                         }
-
-
                     </tbody>
                 </table>
             </div>

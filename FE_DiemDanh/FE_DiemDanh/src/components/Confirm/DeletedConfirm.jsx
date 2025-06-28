@@ -4,7 +4,7 @@ import { Modal, Button } from "zmp-ui";
 
 const DeletedConfirm = ({ isOpen, handleClose, handleDelete, text }) => {
     useEffect(()=>{
-        console.log("Đặng Thành Haior");
+        console.log("Văn Đình Thuật");
         
     }, [])
     return (

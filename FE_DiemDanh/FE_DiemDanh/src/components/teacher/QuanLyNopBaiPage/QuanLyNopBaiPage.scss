@@ -1,0 +1,159 @@
+.qlnbp-container {
+  padding: 16px;
+  background-color: #f5f5f5;
+  min-height: 100vh;
+}
+
+.qlnbp-header {
+  margin-bottom: 24px;
+}
+.qlnbp-back-btn {
+  margin-bottom: 16px;
+}
+
+.qlnbp-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 24px;
+}
+.qlnbp-stats-card {
+  background-color: white;
+  padding: 20px;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+  text-align: center;
+}
+.qlnbp-stats-number {
+  font-size: 32px;
+  font-weight: bold;
+}
+.qlnbp-stats-number.submitted { color: #4caf50; }
+.qlnbp-stats-number.not-submitted { color: #f44336; }
+.qlnbp-stats-number.late { color: #ff9800; }
+.qlnbp-total-students .qlnbp-stats-number { color: #1976d2; }
+.qlnbp-stats-label {
+  font-size: 14px;
+  color: #666;
+}
+
+.qlnbp-error-box {
+  background-color: #ffebee;
+  color: #c53030;
+  padding: 12px;
+  border-radius: 8px;
+  margin-bottom: 16px;
+}
+
+.qlnbp-filter-box {
+  background-color: white;
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+.qlnbp-filter-flex {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.qlnbp-search-label,
+.qlnbp-filter-label {
+  margin-bottom: 8px;
+}
+.qlnbp-search-input {
+  width: 100%;
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+}
+.qlnbp-filter-btn-group {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+
+.qlnbp-student-list {
+  background-color: white;
+  border-radius: 12px;
+  overflow: hidden;
+}
+.qlnbp-loading-box,
+.qlnbp-empty-box {
+  text-align: center;
+  padding: 40px;
+}
+.qlnbp-empty-text {
+  color: #666;
+}
+.qlnbp-student-item {
+  padding: 20px;
+  border-bottom: 1px solid #eee;
+}
+.qlnbp-student-item.even {
+  background-color: #fafafa;
+}
+.qlnbp-student-item.odd {
+  background-color: white;
+}
+.qlnbp-student-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+.qlnbp-student-info {
+  flex: 1;
+}
+.qlnbp-student-name {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+.qlnbp-student-mssv,
+.qlnbp-student-date,
+.qlnbp-student-file {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 4px;
+}
+.qlnbp-student-note-box {
+  background-color: #f3f4f6;
+  padding: 8px 12px;
+  border-radius: 8px;
+  margin-top: 8px;
+}
+.qlnbp-student-note {
+  font-size: 14px;
+  color: #1976d2;
+}
+.qlnbp-status-badge {
+  display: inline-block;
+  padding: 4px 8px;
+  border-radius: 4px;
+  margin-top: 8px;
+  font-size: 14px;
+}
+.qlnbp-status-badge.submitted {
+  background-color: #e8f5e9;
+  color: #2e7d32;
+}
+.qlnbp-status-badge.not-submitted {
+  background-color: #ffebee;
+  color: #c62828;
+}
+.qlnbp-action-btns {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.qlnbp-modal-content {
+  padding: 16px;
+}
+.qlnbp-modal-input {
+  margin-bottom: 16px;
+}
+.qlnbp-modal-btns {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+} 

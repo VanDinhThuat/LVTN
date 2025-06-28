@@ -26,6 +26,9 @@ const CreateTuanNopBai = () => {
   const params = new URLSearchParams(location.search);
   const maBuoiHoc = params.get("maNhom") || params.get("maBuoiHoc");
 
+  // Nhận các giá trị truyền sang từ trang trước
+  const { projectStart, projectEnd, lastWeekEnd } = location.state || {};
+
   const showSnackbar = (message, type = 'success') => {
     openSnackbar({
       text: message,
@@ -43,7 +46,21 @@ const CreateTuanNopBai = () => {
     // Validate dates
     const startDate = new Date(ngayBatDau);
     const endDate = new Date(ngayKetThuc);
-    
+
+    // Ràng buộc ngày bắt đầu và kết thúc tuần phải nằm trong khoảng của đồ án
+    if (projectStart && startDate < new Date(projectStart)) {
+      showSnackbar('Ngày bắt đầu tuần phải lớn hơn hoặc bằng ngày bắt đầu đồ án!', 'error');
+      return;
+    }
+    if (projectEnd && endDate > new Date(projectEnd)) {
+      showSnackbar('Ngày kết thúc tuần phải nhỏ hơn hoặc bằng ngày kết thúc đồ án!', 'error');
+      return;
+    }
+    // Ràng buộc ngày bắt đầu tuần mới phải lớn hơn hoặc bằng ngày kết thúc tuần trước (nếu có)
+    if (lastWeekEnd && startDate < new Date(lastWeekEnd)) {
+      showSnackbar('Ngày bắt đầu tuần mới phải lớn hơn hoặc bằng ngày kết thúc tuần trước!', 'error');
+      return;
+    }
     if (endDate <= startDate) {
       showSnackbar('Ngày kết thúc phải sau ngày bắt đầu!', 'error');
       return;

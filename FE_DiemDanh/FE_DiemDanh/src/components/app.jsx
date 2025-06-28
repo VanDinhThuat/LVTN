@@ -14,6 +14,7 @@ const MyApp = () => {
     <App>
       <SnackbarProvider>
         <Router />
+         
       </SnackbarProvider>
     </App>
   );

@@ -47,14 +47,6 @@ const ThongBao = () => {
       <CheckCircle className="icon" size={64} color="#4CAF50" />
       <h2>Điểm danh thành công!</h2>
       <p>Chúc bạn một buổi học vui vẻ 🎉</p>
-      {location && (
-        <div className="location-info">
-          <p><strong>Latitude:</strong> {location.latitude}</p>
-          <p><strong>Longitude:</strong> {location.longitude}</p>
-          {address && <p><strong>Địa chỉ:</strong> {address}</p>}
-        </div>
-      )}
-      {error && <p className="error">{error}</p>}
       <button className="btn-home" onClick={() => navigate("/student")}>
         Về trang chủ
       </button>

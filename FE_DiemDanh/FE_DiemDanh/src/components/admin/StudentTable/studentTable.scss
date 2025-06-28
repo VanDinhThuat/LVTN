@@ -6,7 +6,43 @@
     overflow: scroll;
 }
 
+.button-container {
+    display: flex;
+    gap: 12px;
+    padding: 16px 20px 0 20px;
+    flex-wrap: wrap;
+}
+
 .btn-student{
     margin-top: 10px;
     margin-bottom: 10px;
+    background: #1976d2;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background: #1565c0;
+        transform: translateY(-1px);
+    }
+}
+
+.btn-import {
+    margin-top: 10px;
+    margin-bottom: 10px;
+    background: #4caf50;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: all 0.3s ease;
+
+    &:hover {
+        background: #388e3c;
+        transform: translateY(-1px);
+    }
 }

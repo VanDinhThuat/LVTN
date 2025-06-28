@@ -1,5 +1,4 @@
-import { AnimationRoutes, ZMPRouter } from "zmp-ui";
-import { Route } from "react-router-dom";
+import { AnimationRoutes, ZMPRouter,Route } from "zmp-ui";
 //import HomeAdmin from "../components/Admin/Home/Home";
 import HomeAdmin from "../components/admin/home/Home";
 import TeacherProfile from "../components/admin/TeacherProfile/TeacherProfile";
@@ -12,6 +11,7 @@ import ForgetPassword from "../components/ForgetPassword/ForgetPassword";
 import CreateSubject from "../components/admin/CreateSubject/CreateSubject";
 import CreateClass from "../components/admin/CreateClass/CreateClass";
 import CreateStudent from "../components/admin/CreateStudent/CreateStudent";
+import ImportStudents from "../components/admin/ImportStudents/ImportStudents";
 import CreateSession from "../components/teacher/CreateSession/CreateSession";
 import StudentHome from "../components/student/StudentHome";
 import QrCode from "../components/teacher/QrCode/QrCode";
@@ -52,6 +52,7 @@ const Router = () => {
                 <Route path="/create-subject" element={<CreateSubject />}></Route>
                 <Route path="/create-class" element={<CreateClass />}></Route>
                 <Route path="/create-student" element={<CreateStudent />}></Route>
+                <Route path="/import-students" element={<ImportStudents />}></Route>
                 <Route path="/create-session" element={<CreateSession />}></Route>
                 <Route path="/student" element={<StudentHome />}></Route>
                 <Route path="/create-qrcode" element={<QrCode />}></Route>

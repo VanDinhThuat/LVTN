@@ -30,8 +30,9 @@ const StudentTable = () => {
     return (
         <Page>
             <Box>
-                <Box>
+                <Box className="button-container">
                     <Button className="btn-student" onClick={()=>navigate("/create-student")}>Thêm sinh viên</Button>
+                    <Button className="btn-import" onClick={()=>navigate("/import-students")}>📥 Import Excel</Button>
                 </Box>
                 <Box className="containerCard">
                     {

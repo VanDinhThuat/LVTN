@@ -52,6 +52,8 @@ const ProjectGroupManager = () => {
       const response = await axios.get(`${url}/api/lop-do-an/${maLopDoAn}`);
       setClassName(response.data.tenLopDoAn);
       setClasses(response);
+    
+
     } catch (error) {
       console.error('Error fetching class info:', error);
       showSnackbar('Không thể tải thông tin lớp!', 'error');
@@ -80,7 +82,10 @@ const ProjectGroupManager = () => {
   };
   const handleSelectgroup = (group) => {
     try {
-      navigate(`/tuan-nop-bai/?maNhom=${group.maNhom}`);
+      navigate(`/tuan-nop-bai/?maNhom=${group.maNhom}`,{state:
+         {tenLopDoAn: className,
+          maLopDoAn: classId,
+         }});
     } catch (error) {
       console.error('Error navigating to group:', error);
       showSnackbar('Có lỗi xảy ra khi chuyển trang!', 'error');
@@ -146,14 +151,7 @@ const ProjectGroupManager = () => {
     <Page>
       <Box p={4}>
         <Box mb={4}>
-          <Button
-            variant="secondary"
-            fullWidth
-            onClick={() => navigate('/lop-do-an')}
-            className="mb-6"
-          >
-            ⬅️ Quay Lại
-          </Button>
+         
           <Box className="border-t border-gray-200 pt-6 mb-4">
             <Text size="large" bold className="text-blue-600 mb-4 block">
               👥 {className || 'Đang tải...'}

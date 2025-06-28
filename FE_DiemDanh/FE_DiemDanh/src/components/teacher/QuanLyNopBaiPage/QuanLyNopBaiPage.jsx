@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { Box, Button, Page, Text, useLocation, useNavigate, Modal, Input } from "zmp-ui";
 import axios from "axios";
 import { url } from '../../../AppConfig/AppConfig';
+import './QuanLyNopBaiPage.scss';
 
 const QuanLyNopBaiPage = () => {
   const [loading, setLoading] = useState(false);
@@ -199,81 +200,52 @@ const QuanLyNopBaiPage = () => {
 
   return (
     <Page>
-      <Box style={{ padding: '16px', backgroundColor: '#f5f5f5', minHeight: '100vh' }}>
+      <Box className="qlnbp-container">
         {/* Header */}
-        <Box style={{ marginBottom: '24px' }}>
+        <Box className="qlnbp-header">
           <Button 
             variant="secondary" 
             onClick={() => navigate(-1)}
-            style={{ marginBottom: '16px' }}
+            className="qlnbp-back-btn"
           >
             ← Quay lại
           </Button>
         </Box>
 
         {/* Statistics Cards */}
-        <Box style={{ 
-          display: 'grid', 
-          gridTemplateColumns: 'repeat(auto-fit, minmax(200px, 1fr))', 
-          gap: '16px', 
-          marginBottom: '24px' 
-        }}>
-          <Box style={{ 
-            backgroundColor: 'white', 
-            padding: '20px', 
-            borderRadius: '12px',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-            textAlign: 'center'
-          }}>
-            <Text style={{ fontSize: '32px', fontWeight: 'bold', color: '#1976d2' }}>
+        <Box className="qlnbp-stats-grid">
+          <Box className="qlnbp-stats-card qlnbp-total-students">
+            <Text className="qlnbp-stats-number">
               {submissionReport.totalStudents}
             </Text>
-            <Text style={{ fontSize: '14px', color: '#666' }}>
+            <Text className="qlnbp-stats-label">
               Tổng số học sinh
             </Text>
           </Box>
           
-          <Box style={{ 
-            backgroundColor: 'white', 
-            padding: '20px', 
-            borderRadius: '12px',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-            textAlign: 'center'
-          }}>
-            <Text style={{ fontSize: '32px', fontWeight: 'bold', color: '#4caf50' }}>
+          <Box className="qlnbp-stats-card qlnbp-submitted">
+            <Text className="qlnbp-stats-number submitted">
               {submissionReport.submitted}
             </Text>
-            <Text style={{ fontSize: '14px', color: '#666' }}>
+            <Text className="qlnbp-stats-label">
               Đã nộp bài
             </Text>
           </Box>
           
-          <Box style={{ 
-            backgroundColor: 'white', 
-            padding: '20px', 
-            borderRadius: '12px',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-            textAlign: 'center'
-          }}>
-            <Text style={{ fontSize: '32px', fontWeight: 'bold', color: '#f44336' }}>
+          <Box className="qlnbp-stats-card qlnbp-not-submitted">
+            <Text className="qlnbp-stats-number not-submitted">
               {submissionReport.notSubmitted}
             </Text>
-            <Text style={{ fontSize: '14px', color: '#666' }}>
+            <Text className="qlnbp-stats-label">
               Chưa nộp
             </Text>
           </Box>
           
-          <Box style={{ 
-            backgroundColor: 'white', 
-            padding: '20px', 
-            borderRadius: '12px',
-            boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
-            textAlign: 'center'
-          }}>
-            <Text style={{ fontSize: '32px', fontWeight: 'bold', color: '#ff9800' }}>
+          <Box className="qlnbp-stats-card qlnbp-late">
+            <Text className="qlnbp-stats-number late">
               {submissionReport.lateSubmissions}
             </Text>
-            <Text style={{ fontSize: '14px', color: '#666' }}>
+            <Text className="qlnbp-stats-label">
               Nộp muộn
             </Text>
           </Box>
@@ -281,32 +253,17 @@ const QuanLyNopBaiPage = () => {
 
         {/* Error Message */}
         {error && (
-          <Box style={{ 
-            backgroundColor: '#ffebee', 
-            color: '#c53030', 
-            padding: '12px', 
-            borderRadius: '8px',
-            marginBottom: '16px'
-          }}>
+          <Box className="qlnbp-error-box">
             <Text>{error}</Text>
           </Box>
         )}
 
         {/* Filters and Search */}
-        <Box style={{ 
-          backgroundColor: 'white', 
-          padding: '20px', 
-          borderRadius: '12px',
-          marginBottom: '20px'
-        }}>
-          <Box style={{ 
-            display: 'flex', 
-            flexDirection: 'column',
-            gap: '16px'
-          }}>
+        <Box className="qlnbp-filter-box">
+          <Box className="qlnbp-filter-flex">
             {/* Search */}
             <Box>
-              <Text style={{ marginBottom: '8px' }}>
+              <Text className="qlnbp-search-label">
                 🔍 Tìm kiếm:
               </Text>
               <input
@@ -314,21 +271,16 @@ const QuanLyNopBaiPage = () => {
                 placeholder="Tìm theo tên hoặc mã số sinh viên..."
                 value={searchQuery}
                 onChange={(e) => setSearchQuery(e.target.value)}
-                style={{
-                  width: '100%',
-                  padding: '12px',
-                  border: '1px solid #ddd',
-                  borderRadius: '8px'
-                }}
+                className="qlnbp-search-input"
               />
             </Box>
 
             {/* Filter buttons */}
             <Box>
-              <Text style={{ marginBottom: '8px' }}>
+              <Text className="qlnbp-filter-label">
                 📊 Lọc theo trạng thái:
               </Text>
-              <Box style={{ display: 'flex', gap: '8px', flexWrap: 'wrap' }}>
+              <Box className="qlnbp-filter-btn-group">
                 <Button
                   variant={filter === 'all' ? 'primary' : 'secondary'}
                   onClick={() => setFilter('all')}
@@ -353,18 +305,14 @@ const QuanLyNopBaiPage = () => {
         </Box>
 
         {/* Student List */}
-        <Box style={{ 
-          backgroundColor: 'white', 
-          borderRadius: '12px',
-          overflow: 'hidden'
-        }}>
+        <Box className="qlnbp-student-list">
           {loading ? (
-            <Box style={{ textAlign: 'center', padding: '40px' }}>
+            <Box className="qlnbp-loading-box">
               <Text>Đang tải danh sách...</Text>
             </Box>
           ) : filteredData.length === 0 ? (
-            <Box style={{ textAlign: 'center', padding: '40px' }}>
-              <Text style={{ color: '#666' }}>
+            <Box className="qlnbp-empty-box">
+              <Text className="qlnbp-empty-text">
                 {searchQuery || filter !== 'all' ? 'Không tìm thấy kết quả phù hợp' : 'Chưa có dữ liệu'}
               </Text>
             </Box>
@@ -373,63 +321,46 @@ const QuanLyNopBaiPage = () => {
               {filteredData.map((item, index) => (
                 <Box 
                   key={item.maNopBai || index}
-                  style={{ 
-                    padding: '20px', 
-                    borderBottom: '1px solid #eee',
-                    backgroundColor: index % 2 === 0 ? '#fafafa' : 'white'
-                  }}
+                  className={`qlnbp-student-item ${index % 2 === 0 ? 'even' : 'odd'}`}
                 >
-                  <Box style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+                  <Box className="qlnbp-student-row">
                     {/* Student Info */}
-                    <Box style={{ flex: 1 }}>
-                      <Text style={{ fontSize: '16px', fontWeight: 'bold', marginBottom: '8px' }}>
+                    <Box className="qlnbp-student-info">
+                      <Text className="qlnbp-student-name">
                         👤 {item.tenHocSinh}
                       </Text>
                       
-                      <Text style={{ fontSize: '14px', color: '#666', marginBottom: '4px' }}>
+                      <Text className="qlnbp-student-mssv">
                         🎓 MSSV: {item.maNguoiDung}
                       </Text>
                       
                       {item.ngayNop && (
-                        <Text style={{ fontSize: '14px', color: '#666', marginBottom: '4px' }}>
+                        <Text className="qlnbp-student-date">
                           📅 Nộp lúc: {formatDate(item.ngayNop)}
                         </Text>
                       )}
                       
                       {item.tenFile && (
-                        <Text style={{ fontSize: '14px', color: '#666', marginBottom: '4px' }}>
+                        <Text className="qlnbp-student-file">
                           📎 File: {item.tenFile}
                         </Text>
                       )}
                       
                       {item.ghiChu && (
-                        <Box style={{
-                          backgroundColor: '#f3f4f6',
-                          padding: '8px 12px',
-                          borderRadius: '8px',
-                          marginTop: '8px'
-                        }}>
-                          <Text style={{ fontSize: '14px', color: '#1976d2' }}>
+                        <Box className="qlnbp-student-note-box">
+                          <Text className="qlnbp-student-note">
                             📝 Đánh giá: {item.ghiChu}
                           </Text>
                         </Box>
                       )}
 
-                      <Box style={{ 
-                        display: 'inline-block',
-                        padding: '4px 8px',
-                        borderRadius: '4px',
-                        backgroundColor: item.daNop ? '#e8f5e9' : '#ffebee',
-                        color: item.daNop ? '#2e7d32' : '#c62828',
-                        marginTop: '8px',
-                        fontSize: '14px'
-                      }}>
+                      <Box className={`qlnbp-status-badge ${item.daNop ? 'submitted' : 'not-submitted'}`}>
                         {item.daNop ? '✅ Đã nộp' : '❌ Chưa nộp'}
                       </Box>
                     </Box>
 
                     {/* Action Buttons */}
-                    <Box style={{ display: 'flex', flexDirection: 'column', gap: '8px' }}>
+                    <Box className="qlnbp-action-btns">
                       {item.daNop && (
                         <>
                           <Button
@@ -471,7 +402,7 @@ const QuanLyNopBaiPage = () => {
           }}
           description="Nhập đánh giá của bạn về bài nộp này"
         >
-          <Box style={{ padding: '16px' }}>
+          <Box className="qlnbp-modal-content">
             <Input
               type="textarea"
               label="Đánh giá"
@@ -479,10 +410,10 @@ const QuanLyNopBaiPage = () => {
               value={evalNote}
               onChange={(e) => setEvalNote(e.target.value)}
               rows={4}
-              style={{ marginBottom: '16px' }}
+              className="qlnbp-modal-input"
             />
             
-            <Box style={{ display: 'flex', gap: '8px', justifyContent: 'flex-end' }}>
+            <Box className="qlnbp-modal-btns">
               <Button
                 variant="secondary"
                 onClick={() => {

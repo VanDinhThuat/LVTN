@@ -1,0 +1,181 @@
+.tuan-nop-bai-container {
+  padding: 20px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.tuan-nop-bai-header {
+  margin-bottom: 24px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.tuan-nop-bai-header-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.group-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 8px;
+  color: #1a1a1a;
+}
+.tuan-nop-bai-desc {
+  color: #666;
+  font-size: 15px;
+}
+
+.tuan-nop-bai-item {
+  margin-bottom: 24px;
+  padding: 20px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+  transition: transform 0.2s ease;
+}
+.tuan-nop-bai-item:hover {
+  transform: translateY(-2px);
+}
+.tuan-nop-bai-item-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 16px;
+}
+.tuan-nop-bai-item-info {
+  flex: 1;
+}
+.tuan-nop-bai-item-title-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.tuan-nop-bai-item-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a1a1a;
+}
+.tuan-nop-bai-status {
+  font-size: 13px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-weight: 500;
+}
+.tuan-nop-bai-status.active {
+  background-color: #e8f5e8;
+  color: #2d5a2d;
+}
+.tuan-nop-bai-status.closed {
+  background-color: #fee;
+  color: #c53030;
+}
+.tuan-nop-bai-item-desc {
+  color: #666;
+  font-size: 15px;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+.tuan-nop-bai-item-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 16px;
+  margin-bottom: 20px;
+  padding: 16px;
+  background-color: #f8f9fa;
+  border-radius: 8px;
+}
+.tuan-nop-bai-date {
+  font-size: 15px;
+  color: #444;
+}
+.tuan-nop-bai-student-list {
+  background-color: #f8f9fa;
+  padding: 16px;
+  border-radius: 8px;
+  margin-bottom: 20px;
+}
+.tuan-nop-bai-student-list-title {
+  font-weight: 600;
+  margin-bottom: 12px;
+  font-size: 15px;
+  color: #1a1a1a;
+}
+.tuan-nop-bai-student-list-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.tuan-nop-bai-student {
+  background-color: #e8f5e8;
+  color: #2d5a2d;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.tuan-nop-bai-student-more {
+  background-color: #e0e0e0;
+  color: #666;
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 13px;
+  font-weight: 500;
+}
+.tuan-nop-bai-action-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.tuan-nop-bai-btn {
+  padding: 10px 20px;
+  border-radius: 8px;
+}
+.tuan-nop-bai-add-row {
+  text-align: center;
+  padding: 20px;
+  margin-top: 20px;
+}
+.tuan-nop-bai-btn-add {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-size: 15px;
+  background-color: #f8f9fa;
+  border: 1px dashed #ccc;
+}
+.tuan-nop-bai-loading {
+  text-align: center;
+  padding: 50px;
+}
+.tuan-nop-bai-loading-text {
+  font-size: 16px;
+  color: #666;
+}
+.tuan-nop-bai-error {
+  text-align: center;
+  padding: 50px;
+}
+.tuan-nop-bai-error-text {
+  color: #c53030;
+  font-size: 16px;
+}
+.tuan-nop-bai-empty {
+  text-align: center;
+  padding: 60px 20px;
+  background-color: #fff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+}
+.tuan-nop-bai-empty-title {
+  font-size: 18px;
+  font-weight: 600;
+  margin-bottom: 12px;
+  color: #1a1a1a;
+}
+.tuan-nop-bai-empty-desc {
+  color: #666;
+  margin-bottom: 24px;
+  font-size: 15px;
+} 
