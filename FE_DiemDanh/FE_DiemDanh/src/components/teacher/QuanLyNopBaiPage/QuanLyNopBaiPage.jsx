@@ -20,6 +20,7 @@ const QuanLyNopBaiPage = () => {
   const [showEvalModal, setShowEvalModal] = useState(false);
   const [currentEvalItem, setCurrentEvalItem] = useState(null);
   const [evalNote, setEvalNote] = useState('');
+  const [currentUserId, setCurrentUserId] = useState(null);
   
   const location = useLocation();
   const navigate = useNavigate();
@@ -27,6 +28,9 @@ const QuanLyNopBaiPage = () => {
   const maTuan = params.get("maTuan");
 
   useEffect(() => {
+    // Lấy userId hiện tại từ localStorage
+    const user = JSON.parse(localStorage.getItem("user"));
+    setCurrentUserId(user?.userId);
     if (maTuan) {
       fetchDanhSachNopBai();
     }
@@ -375,12 +379,24 @@ const QuanLyNopBaiPage = () => {
                           >
                             {item.ghiChu ? '✏️ Sửa đánh giá' : '📝 Thêm đánh giá'}
                           </Button>
-                          <Button
-                            variant="danger"
-                            onClick={() => handleDeleteSubmission(item.maNopBai, item.maNguoiDung)}
-                          >
-                            🗑️ Xóa
-                          </Button>
+                          {/* Chỉ hiển thị nút Hủy nộp nếu là bài của sinh viên hiện tại */}
+                          {currentUserId && item.maNguoiDung === currentUserId && (
+                            <Button
+                              variant="danger"
+                              onClick={() => handleDeleteSubmission(item.maNopBai, item.maNguoiDung)}
+                            >
+                              🗑️ Hủy nộp
+                            </Button>
+                          )}
+                          {/* Nếu không phải sinh viên hiện tại, vẫn cho phép admin/giáo viên xóa như cũ */}
+                          {currentUserId && item.maNguoiDung !== currentUserId && (
+                            <Button
+                              variant="danger"
+                              onClick={() => handleDeleteSubmission(item.maNopBai, item.maNguoiDung)}
+                            >
+                              🗑️ Xóa
+                            </Button>
+                          )}
                         </>
                       )}
                     </Box>
